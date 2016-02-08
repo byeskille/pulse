@@ -30,6 +30,16 @@ make run
 make watch
 ```
 
+### Initializing dataset
+
+To initialize the dataset with the last production scan data and database, there's a convenience function:
+
+```
+make data_init
+```
+
+This will download (using `curl`) the current live production database and scan data to the local `data/` directory.
+
 ## Deploying the site
 
 The site can be easily deployed (by someone with credentials to the right server) through [Fabric](https://github.com/fabric/fabric), which requires Python 2.
@@ -57,7 +67,7 @@ This will run the fabric command to deploy to production.
 The command to update the data in Pulse and publish it to production is simple:
 
 ```
-./data/update
+python -m data.update
 ```
 
 **But you will need to do some setup first.**
@@ -92,7 +102,7 @@ And link it to AWS credentials that allow authorized write access to the `pulse.
 From the Pulse root directory:
 
 ```
-./data/update
+python -m data.update
 ```
 
 This will kick off the `domain-scan` scanning process for HTTP/HTTPS and DAP participation, using the `.gov` domain list as specified in `meta.yml` for the base set of domains to scan.

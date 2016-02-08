@@ -1,12 +1,17 @@
-#!/usr/bin/env python
+##
+# This file must be run as a module in order for it to access
+# modules in sibling directories.
+#
+# Run with:
+#   python -m data.update
 
 import subprocess
 import datetime
-import processing
 import os
 import yaml
 import logging
 
+import data.processing
 
 # Orchestrate the overall regular Pulse update process.
 #
@@ -18,16 +23,10 @@ import logging
 #    - If exits with non-0 code, this should exit with non-0 code.
 #    - TODO: How should an admin be notified of an error?
 #
-# 2. Run processing.py to generate front-end-ready data.
-#    - TODO: Slim down what this generates, make more server-generated.
-#    - Will drop results into data/output/processed
+# 2. Run processing.py to generate front-end-ready data as data/db.json.
 #
-# 3. TODO: Refresh application database with latest data.
-#    - Likely to be SQLite.
-#
-# 4. Upload data to S3.
+# 3. Upload data to S3.
 #    - Depends on the AWS CLI and access credentials already being configured.
-#    - TODO: Stop uploading to /live/, make it server-generated.
 #    - TODO: Consider moving from aws CLI to Python library.
 
 this_dir = os.path.dirname(__file__)
@@ -38,7 +37,7 @@ DOMAINS = os.environ.get("DOMAINS", META["data"]["domains_url"])
 
 # post-processing and uploading information
 SCANNED_DATA = os.path.join(this_dir, "./output/scan/results")
-PROCESSED_DATA = os.path.join(this_dir, "./output/processed")
+DB_DATA = os.path.join(this_dir, "./db.json")
 BUCKET_NAME = "pulse.cio.gov"
 
 # domain-scan information
@@ -46,6 +45,11 @@ SCAN_TARGET = os.path.join(this_dir, "./output/scan")
 SCAN_COMMAND = os.environ.get("DOMAIN_SCAN_PATH", None)
 SCANNERS = os.environ.get("SCANNERS", "inspect,tls,analytics")
 ANALYTICS_URL = "https://analytics.usa.gov/data/live/second-level-domains.csv"
+
+# TODO:
+# --date: override date
+# --skip-scan: skip the scanning part (rely on local scan data)
+# --skip-upload: don't bother uploading anything to S3
 
 def run():
   # Definitive scan date for the run.
@@ -61,13 +65,11 @@ def run():
   # 2. Process scan data to be front-end-ready.
   print("[%s] Running Pulse post-processor." % the_date)
   print()
-  processing.run()
+  data.processing.run(the_date)
   print()
   print("[%s] Processed data now in output/data/processed." % the_date)
 
-  # TODO: Refresh application database.
-
-  # 4. Upload data to S3.
+  # 3. Upload data to S3.
   print("[%s] Syncing processed data to S3." % the_date)
   print()
   upload(the_date)
@@ -80,16 +82,16 @@ def run():
 # Upload the scan + processed data to /live/ and /archive/ locations by date.
 def upload(date):
   live_scanned = "s3://%s/live/scan/" % (BUCKET_NAME)
-  live_processed = "s3://%s/live/processed/" % (BUCKET_NAME)
+  live_db = "s3://%s/live/db/" % (BUCKET_NAME)
   archive_scanned = "s3://%s/archive/%s/scan/" % (BUCKET_NAME, date)
-  archive_processed = "s3://%s/archive/%s/processed/" % (BUCKET_NAME, date)
+  archive_db = "s3://%s/archive/%s/db/" % (BUCKET_NAME, date)
 
   acl = "--acl=public-read"
 
   shell_out(["aws", "s3", "sync", SCANNED_DATA, live_scanned, acl])
-  shell_out(["aws", "s3", "sync", PROCESSED_DATA, live_processed, acl])
+  shell_out(["aws", "s3", "cp", DB_DATA, live_db, acl])
   shell_out(["aws", "s3", "sync", SCANNED_DATA, archive_scanned, acl])
-  shell_out(["aws", "s3", "sync", PROCESSED_DATA, archive_processed, acl])
+  shell_out(["aws", "s3", "cp", DB_DATA, archive_db, acl])
 
 
 # Use domain-scan to scan .gov domains from the set domain URL.
