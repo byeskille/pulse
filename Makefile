@@ -20,3 +20,8 @@ watch:
 
 clean:
 	rm -f $(css)
+
+# downloads latest snapshot of data locally
+data_init:
+	aws s3 sync s3://pulse.cio.gov/live/scan/ data/output/scan/results/
+	aws s3 sync s3://pulse.cio.gov/live/processed/ data/output/processed/
