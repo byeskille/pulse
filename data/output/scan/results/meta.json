@@ -1,0 +1,5 @@
+{
+  "command": "/home/eric/18f/scan/scan https://raw.githubusercontent.com/GSA/data/gh-pages/dotgov-domains/2016-01-19-federal.csv --scan=inspect,tls,analytics --analytics=https://analytics.usa.gov/data/live/second-level-domains.csv --output=./data/./output/scan --debug --sort",
+  "end_time": "2016-01-25T03:10:40Z",
+  "start_time": "2016-01-25T03:02:54Z"
+}
