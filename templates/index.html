@@ -13,25 +13,25 @@
 
   <div id="results">
     <div class="https">
-      <h4>Behörden</h4>
+      <h4>Statlige</h4>
       <div class="https_chart"
-        title="BIETEN HTTPS"
+        title="BRUKER HTTPS"
         data-width="287"
         data-report="{{ url_for('report', report_name='https-federal') }}"
         data-link="{{ url_for('https_domains', domain_type='federal') }}"
       ></div>
-      <a href="{{ url_for('https_domains', domain_type='federal') }}" class="button">Ergebnisse anzeigen</a>
+      <a href="{{ url_for('https_domains', domain_type='federal') }}" class="button">Vis resultater</a>
     </div>
 
     <div class="https">
-      <h4>Kommunen</h4>
+      <h4>Lokale og regionale</h4>
       <div class="https_chart"
-        title="BIETEN HTTPS"
+        title="BRUKER HTTPS"
         data-width="287"
         data-report="{{ url_for('report', report_name='https-city') }}"
         data-link="{{ url_for('https_domains', domain_type='city') }}"
       ></div>
-      <a href="{{ url_for('https_domains', domain_type='city') }}" class="button">Ergebnisse anzeigen</a>
+      <a href="{{ url_for('https_domains', domain_type='city') }}" class="button">Vis resultater</a>
     </div>
   </div>
 </div>

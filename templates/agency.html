@@ -9,7 +9,7 @@
 <header>
 
   <h1>{{ agency.name }}</h1>
-  <h2>Gesamtanzahl Domains: {{ agency.total_domains }}</h2>
+  <h2>Totalt antall domener: {{ agency.total_domains }}</h2>
 
 </header>
 
@@ -23,13 +23,13 @@
 				<li class="https">
 
 					<div class="description">
-						<h2>Sicheres HTTPS</h2>
-						<h3>Anzahl Domains: {{ agency.https.eligible }}</h3>
+						<h2>Sikker HTTPS</h2>
+						<h3>Antall domener: {{ agency.https.eligible }}</h3>
 
 						<p>
-				       Diese Daten zeigen, ob Domains deutscher Behörden das HTTPS-Protokoll (<code>https://</code>) unterstützen, und - falls ja - wie stark diese Unterstützung ist.
-				       <a href="https://de.wikipedia.org/wiki/HTTPS">HTTPS</a> ermöglicht eine sichere Verbindung zwischen Webseiten und ihren Besuchern und wird zum Mindeststandard für öffentliche Web-Services.
-				       So empfiehlt auch das BSI den <a href="https://www.bsi.bund.de/DE/Themen/StandardsKriterien/Mindeststandards/SSL-TLS-Protokoll/SSL-TLS-Protokoll.html">Einsatz von HTTPS als Mindeststandard für die öffentliche Verwaltung</a>.
+				       Disse dataene måler om offentlige nettsteder i Norge støtter HTTPS (<code>https://</code>), og - hvis ja - hvor godt oppsettet er.
+				       <a href="https://no.wikipedia.org/wiki/HTTPS">HTTPS</a> muliggjør sikrere kommunikasjon mellom nettsteder og de som besøker dem. HTTPS blir stadig mer vanlig på nettet og anses som en viktig standard for sikkerhet.
+				       
 				    </p>
 
 					</div>
@@ -38,14 +38,14 @@
 
 						<li class="https-coverage">
 							<div class="percent">{{ agency.https.uses | percent(agency.https.eligible) }}%</div>
-							<div class="label">Bietet HTTPS</div>
+							<div class="label">Bruker HTTPS</div>
 							<div class="bar">
 								<div class="fill" style="top: {{ agency.https.uses | percent_not(agency.https.eligible) }}%"></div>
 							</div>
 						</li>
 						<li class="enforces-https">
 							<div class="percent">{{ agency.https.enforces | percent(agency.https.eligible) }}%</div>
-							<div class="label">Erzwingt<br/>HTTPS</div>
+							<div class="label">HTTPS for<br/>all trafikk</div>
 							<div class="bar">
 								<div class="fill" style="top: {{ agency.https.enforces | percent_not(agency.https.eligible) }}%"></div>
 							</div>
