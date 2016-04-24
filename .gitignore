@@ -1,5 +1,6 @@
 /data/output
 db.json
+domains.csv
 .env
 
 logs
@@ -28,3 +29,5 @@ todo.txt
 
 build/
 !build/.keep
+
+deploy.sh

@@ -22,11 +22,12 @@ freezer = Freezer(app)
 
 @freezer.register_generator
 def report_files():
-    yield 'report', { 'report_name': 'https' }
-    yield 'agency_report', { 'report_name': 'https' }
-    yield 'domain_report', { 'report_name': 'https', 'ext': 'json' }
-    yield 'domain_report', { 'report_name': 'https', 'ext': 'csv' }
-    yield 'report_feed', { 'report_name': 'https', 'ext': 'xml' }
+  for report_name in ['https', 'https-federal', 'https-city']:
+    yield 'report', { 'report_name': report_name }
+    yield 'agency_report', { 'report_name': report_name }
+    yield 'domain_report', { 'report_name': report_name, 'ext': 'json' }
+    yield 'domain_report', { 'report_name': report_name, 'ext': 'csv' }
+    yield 'report_feed', { 'report_name': report_name, 'ext': 'xml' }
 
 
 if __name__ == '__main__':

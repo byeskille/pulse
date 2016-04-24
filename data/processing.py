@@ -32,7 +32,7 @@ INPUT_SCAN_DATA = os.path.join(this_dir, "./output/scan/results")
 
 from app import models
 from app.models import Report, Domain, Agency
-from app.data import LABELS
+from app.data import LABELS, DOMAIN_TYPES
 
 
 # Read in data from domains.csv, and scan data from domain-scan.
@@ -124,22 +124,27 @@ def load_domain_data():
         continue
 
       domain_name = row[0].lower().strip()
-      domain_type = "<domaintypedummy>"
-      agency_name = row[1].strip()
+      domain_type = nice_domain_type_for(row[1].strip())
+      agency_name = row[2].strip()
+
+      if domain_type != "federal":
+        agency_name = row[3].strip()
+
       agency_slug = slugify.slugify(agency_name)
-      branch = ""
+      branch = "" # empty branch disables analytics
 
       # Exclude cities, counties, tribes, etc.
       #if domain_type != "Federal Agency":
       #  continue
 
       # There are a few erroneously marked non-federal domains.
-      if branch == "non-federal":
-        continue
+      #if branch == "non-federal":
+      #  continue
 
       if domain_name not in domain_map:
         domain_map[domain_name] = {
           'domain': domain_name,
+          'domain_type': domain_type,
           'agency_name': agency_name,
           'agency_slug': agency_slug,
           'branch': branch,
@@ -149,6 +154,7 @@ def load_domain_data():
         agency_map[agency_slug] = {
           'name': agency_name,
           'slug': agency_slug,
+          'type': domain_type,
           'branch': branch,
           'total_domains': 1
         }
@@ -176,37 +182,42 @@ def load_scan_data(domains):
 
       domain = row[0].lower()
       if not domains.get(domain):
-        # print("[inspect] Skipping %s, not a federal domain from domains.csv." % domain)
-        continue
+        if domains.get(strip_www(domain)):
+          domain = strip_www(domain)
+        else:
+          print("[inspect] Skipping %s, not a federal domain from domains.csv." % domain)
+          continue
 
       dict_row = {}
       for i, cell in enumerate(row):
         dict_row[headers[i]] = cell
       scan_data[domain]['inspect'] = dict_row
 
-  headers = []
-  with open(os.path.join(INPUT_SCAN_DATA, "tls.csv"), newline='') as csvfile:
-    for row in csv.reader(csvfile):
-      if (row[0].lower() == "domain"):
-        headers = row
-        continue
+  for scanner in ['tls', 'sslyze']:
+    if not os.path.exists(os.path.join(INPUT_SCAN_DATA, "%s.csv" % scanner)):
+      continue
+    headers = []
+    with open(os.path.join(INPUT_SCAN_DATA, "%s.csv" % scanner), newline='') as csvfile:
+      for row in csv.reader(csvfile):
+        if (row[0].lower() == "domain"):
+          headers = row
+          continue
 
-      domain = row[0].lower()
-      if not domains.get(domain):
-        # print("[tls] Skipping %s, not a federal domain from domains.csv." % domain)
-        continue
+        domain = row[0].lower()
+        if not domains.get(domain):
+          # print("[tls] Skipping %s, not a federal domain from domains.csv." % domain)
+          continue
 
-      dict_row = {}
-      for i, cell in enumerate(row):
-        dict_row[headers[i]] = cell
+        dict_row = {}
+        for i, cell in enumerate(row):
+          dict_row[headers[i]] = cell
 
-      # For now: overwrite previous rows if present, use last endpoint.
-      scan_data[domain]['tls'] = dict_row
-
+        # For now: overwrite previous rows if present, use last endpoint.
+        scan_data[domain]['tls'] = dict_row
 
   # Now, analytics measurement.
-  headers = []
   if os.path.exists(os.path.join(INPUT_SCAN_DATA, "analytics.csv")):
+    headers = []
     with open(os.path.join(INPUT_SCAN_DATA, "analytics.csv"), newline='') as csvfile:
       for row in csv.reader(csvfile):
         if (row[0].lower() == "domain"):
@@ -266,21 +277,21 @@ def update_agency_totals():
     # TODO: Do direct DB queries for answers, rather than iterating.
 
     # Analytics
+    if False:
+      eligible = Domain.eligible_for_agency(agency['slug'], 'analytics')
 
-    eligible = Domain.eligible_for_agency(agency['slug'], 'analytics')
+      agency_report = {
+        'eligible': len(eligible),
+        'participating': 0
+      }
 
-    agency_report = {
-      'eligible': len(eligible),
-      'participating': 0
-    }
+      for domain in eligible:
+        report = domain['analytics']
+        if report['participating'] == True:
+          agency_report['participating'] += 1
 
-    for domain in eligible:
-      report = domain['analytics']
-      if report['participating'] == True:
-        agency_report['participating'] += 1
-
-    print("[%s][%s] Adding report." % (agency['slug'], 'analytics'))
-    Agency.add_report(agency['slug'], 'analytics', agency_report)
+      print("[%s][%s] Adding report." % (agency['slug'], 'analytics'))
+      Agency.add_report(agency['slug'], 'analytics', agency_report)
 
 
     # HTTPS
@@ -473,12 +484,11 @@ def https_report_for(domain_name, domain, scan_data):
   if (https <= 0):
     grade = -1 # N/A
 
-  elif tls is None:
-    # print("[https][%s] No TLS scan data found." % domain)
+  elif tls is None or tls.get('Grade', None) is None:
+    # print("[https][%s] No TLS grade found." % domain)
     grade = -1 # N/A
 
   else:
-
     grade = {
       "F": 0,
       "T": 1,
@@ -513,40 +523,43 @@ def https_report_for(domain_name, domain, scan_data):
 
 # Create a Report about each tracked stat.
 def latest_reports():
+  reports = []
 
-  https_domains = Domain.eligible('https')
+  for domain_type in DOMAIN_TYPES:
+    https_domains = Domain.eligible_for_type(domain_type, 'https')
 
-  total = len(https_domains)
-  uses = 0
-  enforces = 0
-  hsts = 0
-  for domain in https_domains:
-    report = domain['https']
-    # HTTPS needs to be enabled.
-    # It's okay if it has a bad chain.
-    # However, it's not okay if HTTPS is downgraded.
-    if (
-      (report['uses'] >= 1) and
-      (report['enforces'] >= 1)
-    ):
-      uses += 1
+    total = len(https_domains)
+    uses = 0
+    enforces = 0
+    hsts = 0
+    for domain in https_domains:
+      report = domain['https']
+      # HTTPS needs to be enabled.
+      # It's okay if it has a bad chain.
+      # However, it's not okay if HTTPS is downgraded.
+      if (
+        (report['uses'] >= 1) and
+        (report['enforces'] >= 1)
+      ):
+        uses += 1
 
-    # Needs to be Default or Strict to be 'Yes'
-    if report['enforces'] >= 2:
-      enforces += 1
+      # Needs to be Default or Strict to be 'Yes'
+      if report['enforces'] >= 2:
+        enforces += 1
 
-    # Needs to be at least partially present
-    if report['hsts'] >= 1:
-      hsts += 1
+      # Needs to be at least partially present
+      if report['hsts'] >= 1:
+        hsts += 1
 
-  https_report = {
-    'https': {
-      'eligible': total,
-      'uses': uses,
-      'enforces': enforces,
-      'hsts': hsts
-    }
-  }
+    https_report = 'https-' + domain_type
+    reports.append({
+      https_report: {
+        'eligible': total,
+        'uses': uses,
+        'enforces': enforces,
+        'hsts': hsts
+      }
+    })
 
   analytics_domains = Domain.eligible('analytics')
   total = len(analytics_domains)
@@ -562,8 +575,9 @@ def latest_reports():
       'participating': participating
     }
   }
+  reports.append(analytics_report)
 
-  return [https_report, analytics_report]
+  return reports
 
 # Hacky helper - print out the %'s after the command finishes.
 def print_report():
@@ -635,6 +649,15 @@ def branch_for(agency):
 
   else:
     return "executive"
+
+def nice_domain_type_for(domain_type):
+  if domain_type == 'City':
+    return 'city'
+  else:
+    return 'federal'
+
+def strip_www(domain):
+    return domain.replace('www.', '')
 
 ### Run when executed.
 

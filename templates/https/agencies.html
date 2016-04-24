@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 
 {% block page_id %}https{% endblock %}
-{% block title %}HTTPS bei Behördenwebseiten - Alle Behörden{% endblock %}
-{% block description %}Zeigt, wie viele Behördenwebseiten über HTTPS erreichbar sind.{% endblock %}
+{% block title %}HTTPS bei {{ domain_type | domain_type_label('plural') }}webseiten - Alle {{ domain_type | domain_type_label('plural') }}{% endblock %}
+{% block description %}Zeigt, wie viele {{ domain_type | domain_type_label('plural') }}webseiten über HTTPS erreichbar sind.{% endblock %}
 
 {% block content %}
 
@@ -10,15 +10,15 @@
 
 <section id="main-content" class="white-bkg">
   <nav class="tab-menu">
-    <a href="{{ url_for('https_domains') }}" class="tab">Nach Domain</a>
-    <span class="tab">Nach Behörde</span>
-    <a href="{{ url_for('https_guide') }}" class="tab">Info</a>
+    <a href="{{ url_for('https_domains', domain_type=domain_type) }}" class="tab">Nach Domain</a>
+    <span class="tab">Nach {{ domain_type | domain_type_label }}</span>
+    <a href="{{ url_for('https_guide', domain_type=domain_type) }}" class="tab">Info</a>
   </nav>
   <div class="wrapper">
     <table class="agency responsive https">
         <thead>
           <tr>
-            <th class="all" scope="col">Behörde</th>
+            <th class="all" scope="col">{{ domain_type | domain_type_label }}</th>
             <th class="all" scope="col">Anzahl Domains</th>
             <th class="min-tablet" scope="col">Bietet HTTPS</th>
             <th class="min-tablet" scope="col">Erzwingt HTTPS</th>
@@ -31,5 +31,5 @@
 </section>
 
 <script src="{{ url_for('static', filename='js/https/agencies.js') }}?{{ now() | date("%Y%m%j%H%M%S") }}"
-        data-agency-report-url="{{ url_for('agency_report', report_name='https') }}"></script>
+        data-agency-report-url="{{ url_for('agency_report', report_name=report_name) }}"></script>
 {% endblock %}

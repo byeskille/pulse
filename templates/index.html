@@ -7,18 +7,34 @@
 {% block content %}
 <div class="wrapper">
   <div class="hero">
-  	<h2>{{ site.name }}</h2>
-  	<h3>{{ site.description }}</h3>
+    <h2>{{ site.name }}</h2>
+    <h3>{{ site.description }}</h3>
   </div>
 
   <div id="results">
     <div class="https">
-    	<div class="https_chart"
+      <h4>Behörden</h4>
+      <div class="https_chart"
+        title="BIETEN HTTPS"
         data-width="287"
+        data-report="{{ url_for('report', report_name='https-federal') }}"
+        data-link="{{ url_for('https_domains', domain_type='federal') }}"
       ></div>
-    	{% include 'includes/https/donut.html' %}
-      <a href="{{ url_for('https_domains') }}" class="button">Ergebnisse anzeigen</a>
+      <a href="{{ url_for('https_domains', domain_type='federal') }}" class="button">Ergebnisse anzeigen</a>
+    </div>
+
+    <div class="https">
+      <h4>Kommunen</h4>
+      <div class="https_chart"
+        title="BIETEN HTTPS"
+        data-width="287"
+        data-report="{{ url_for('report', report_name='https-city') }}"
+        data-link="{{ url_for('https_domains', domain_type='city') }}"
+      ></div>
+      <a href="{{ url_for('https_domains', domain_type='city') }}" class="button">Ergebnisse anzeigen</a>
     </div>
   </div>
 </div>
+
+<script src="{{ url_for('static', filename='js/https/donut.js') }}?{{ now() | date("%Y%m%j%H%M%S") }}"></script>
 {% endblock %}

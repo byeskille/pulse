@@ -50,6 +50,7 @@ class Report:
 
 class Domain:
   # domain (string)
+  # domain_type (string, federal/city)
   # agency_slug (string)
   # agency_name (string)
   # branch (string, legislative/judicial/executive)
@@ -98,6 +99,19 @@ class Domain:
       (where("agency_slug") == agency_slug)
     )
 
+  def eligible_for_agency_and_type(agency_slug, domain_type, report_name):
+    return db.table('domains').search(
+      (Query()[report_name].exists()) &
+      (where("agency_slug") == agency_slug) &
+      (where("domain_type") == domain_type)
+    )
+
+  def eligible_for_type(domain_type, report_name):
+    return db.table('domains').search(
+      (Query()[report_name].exists()) &
+      (where("domain_type") == domain_type)
+    )
+
   def all():
     return db.table('domains').all()
 
@@ -134,6 +148,7 @@ class Domain:
 class Agency:
   # agency_slug (string)
   # agency_name (string)
+  # type (string, federal/city)
   # branch (string)
   # total_domains (number)
   #
@@ -150,6 +165,12 @@ class Agency:
   def eligible(report_name):
     return db.table('agencies').search(
       Query()[report_name]['eligible'] > 0
+    )
+
+  def eligible_for_type(type, report_name):
+    return db.table('agencies').search(
+      (Query()[report_name]['eligible'] > 0) &
+      (where("type") == type)
     )
 
   # Create a new Agency record with a given name, slug, and total domain count.

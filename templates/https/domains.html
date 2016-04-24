@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 
 {% block page_id %}https{% endblock %}
-{% block title %}HTTPS bei Behördenwebseiten - Alle Domains{% endblock %}
-{% block description %}Zeigt, wie viele Behördenwebseiten über HTTPS erreichbar sind.{% endblock %}
+{% block title %}HTTPS bei {{ domain_type | domain_type_label('plural') }}webseiten - Alle Domains{% endblock %}
+{% block description %}Zeigt, wie viele {{ domain_type | domain_type_label('plural') }}webseiten über HTTPS erreichbar sind.{% endblock %}
 
 {% block content %}
 
@@ -11,8 +11,8 @@
 <section id="main-content" class="white-bkg">
   <nav class="tab-menu">
     <span class="tab">Nach Domain</span>
-    <a href="{{ url_for('https_agencies') }}" class="tab">Nach Behörde</a>
-    <a href="{{ url_for('https_guide') }}" class="tab">Info</a>
+    <a href="{{ url_for('https_agencies', domain_type=domain_type) }}" class="tab">Nach {{ domain_type | domain_type_label }}</a>
+    <a href="{{ url_for('https_guide', domain_type=domain_type) }}" class="tab">Info</a>
   </nav>
   <div class="wrapper">
     <table class="domain responsive https">
@@ -20,7 +20,7 @@
           <tr>
             <th class="all">Domain</th>
             <th class="never">Canonical</th>
-            <th class="none">Behörde</th>
+            <th class="none">{{ domain_type | domain_type_label }}</th>
             <th class="min-tablet">Bietet HTTPS</th>
             <th class="min-tablet">Erzwingt HTTPS</th>
             <th class="min-tablet-l">Strict Transport Security (HSTS)</th>
@@ -34,7 +34,7 @@
 </section>
 
 <script src="{{ url_for('static', filename='js/https/domains.js') }}?{{ now() | date("%Y%m%j%H%M%S") }}"
-        data-domain-report-url="{{ url_for('domain_report', report_name='https', ext='json') }}"
-        data-domain-report-csv-url="{{ url_for('domain_report', report_name='https', ext='csv') }}"></script>
+        data-domain-report-url="{{ url_for('domain_report', report_name=report_name, ext='json') }}"
+        data-domain-report-csv-url="{{ url_for('domain_report', report_name=report_name, ext='csv') }}"></script>
 
 {% endblock %}

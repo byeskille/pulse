@@ -1,5 +1,5 @@
 
-from flask import render_template, Response
+from flask import render_template, Response, redirect, url_for
 from app import models
 from app.data import FIELD_MAPPING
 import ujson
@@ -27,7 +27,11 @@ def register(app):
   # Detailed data per-domain, used to power the data tables.
   @app.route("/data/domains/<report_name>.<ext>")
   def domain_report(report_name, ext):
-      domains = models.Domain.eligible(report_name)
+      if '-' in report_name:
+        report_name, domain_type = report_name.split('-')
+        domains = models.Domain.eligible_for_type(domain_type, report_name)
+      else:
+        domains = models.Domain.eligible(report_name)
 
       if ext == "json":
         response = Response(ujson.dumps({'data': domains}))
@@ -39,22 +43,42 @@ def register(app):
 
   @app.route("/data/agencies/<report_name>.json")
   def agency_report(report_name):
-      domains = models.Agency.eligible(report_name)
+      if '-' in report_name:
+        report_name, domain_type = report_name.split('-')
+        domains = models.Agency.eligible_for_type(domain_type, report_name)
+      else:
+        domains = models.Agency.eligible(report_name)
+
       response = Response(ujson.dumps({'data': domains}))
       response.headers['Content-Type'] = 'application/json'
       return response
 
+  @app.route("/https/<domain_type>/domains/")
+  def https_domains(domain_type):
+      report_name = report_name_for(domain_type)
+      return render_template("https/domains.html", domain_type=domain_type, report_name=report_name)
+
+  @app.route("/https/<domain_type>/agencies/")
+  def https_agencies(domain_type):
+      report_name = report_name_for(domain_type)
+      return render_template("https/agencies.html", domain_type=domain_type, report_name=report_name)
+
+  @app.route("/https/<domain_type>/info/")
+  def https_guide(domain_type):
+      report_name = report_name_for(domain_type)
+      return render_template("https/guide.html", domain_type=domain_type, report_name=report_name)
+
   @app.route("/https/domains/")
-  def https_domains():
-      return render_template("https/domains.html")
+  def legacy_https_domains():
+      return redirect(url_for('https_domains', domain_type='federal'))
 
   @app.route("/https/agencies/")
-  def https_agencies():
-      return render_template("https/agencies.html")
+  def legacy_https_agencies():
+      return redirect(url_for('https_agencies', domain_type='federal'))
 
   @app.route("/https/info/")
-  def https_guide():
-      return render_template("https/guide.html")
+  def legacy_https_guide():
+      return redirect(url_for('https_guide', domain_type='federal'))
 
   @app.route("/agency/<slug>")
   def agency(slug=None):
@@ -90,3 +114,6 @@ def register(app):
   #@app.route("/accessibility/guidance/")
   #def accessibility_guide():
   #  return render_template("accessibility/guide.html")
+
+def report_name_for(domain_type):
+    return 'https-' + domain_type

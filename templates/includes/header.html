@@ -6,13 +6,16 @@
             </h1>
             <ul id="right-nav">
                 <li>
-                    <a href="{{ url_for('https_domains') }}">Ergebnisse</a>
+                    <a href="{{ url_for('https_domains', domain_type='federal') }}">Behörden</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('https_domains', domain_type='city') }}">Kommunen</a>
                 </li>
                 <li>
                     <a href="{{ url_for('about') }}">Über diese Seite</a>
                 </li>
             </ul>
-            <a href="#" id="menu-btn">MENU</a>
+            <a href="#" id="menu-btn">MENÜ</a>
         </div>
 
     </nav>
@@ -21,7 +24,10 @@
       <ul>
         <li><a href="{{ url_for('index') }}">{{ site.name }}</a></li>
         <li>
-            <a href="{{ url_for('https_domains') }}">Ergebnisse</a>
+            <a href="{{ url_for('https_domains', domain_type='federal') }}">Behörden</a>
+        </li>
+        <li>
+            <a href="{{ url_for('https_domains', domain_type='city') }}">Kommunen</a>
         </li>
         <li>
             <a href="{{ url_for('about') }}">Über diese Seite</a>

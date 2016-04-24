@@ -47,3 +47,25 @@ data_init:
 	curl https://s3.amazonaws.com/pulse.cio.gov/live/scan/tls.csv > data/output/scan/results/tls.csv
 	curl https://s3.amazonaws.com/pulse.cio.gov/live/scan/meta.json > data/output/scan/results/meta.json
 	curl https://s3.amazonaws.com/pulse.cio.gov/live/db/db.json > data/db.json
+
+#
+# https.jetzt additions:
+#
+
+deploy.sh:
+	wget -O ./deploy.sh https://raw.githubusercontent.com/X1011/git-directory-deploy/e37ac94cda4bfc5773c0f01d89d8c875a21ab4f9/deploy.sh
+	chmod +x ./deploy.sh
+
+publish: deploy.sh
+	rm -rf build || true
+	mkdir -p build
+	python freeze.py
+	echo "https.jetzt" > build/CNAME
+	GIT_DEPLOY_DIR=build GIT_DEPLOY_BRANCH=gh-pages GIT_DEPLOY_REPO=git@github.com:robbi5/pulse.git ./deploy.sh -m "static build" -n
+
+update_httpsjetzt:
+	pip install --user -r requirements.txt
+	docker pull 18fgsa/domain-scan
+	echo -e '#!/bin/bash'"\n"'/usr/bin/docker run --rm -v $$(pwd)/data/output/scan:$$(pwd)/data/output/scan 18fgsa/domain-scan $$@' > docker-scan
+	chmod +x docker-scan
+	DOMAIN_SCAN_PATH="./docker-scan" SCANNERS=inspect,sslyze python -m data.update --scan=here

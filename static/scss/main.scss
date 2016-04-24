@@ -217,8 +217,7 @@ a#skipnav {
 
 #home {
   .hero {
-    @include span-columns(8);
-    @include shift(2);
+    @include span-columns(12);
 
     text-align: center;
     color: white;
@@ -236,14 +235,13 @@ a#skipnav {
   }
 
   #results {
-    @include span-columns(8);
-    @include shift(2);
+    @include span-columns(12);
 
     padding: 40px 0;
 
     .https {
-      @include span-columns(8 of 8);
-      @media (max-width: 970px) {
+      @include span-columns(6 of 12);
+      @media (max-width: 620px) {
         width: 100%
       }
 
@@ -258,7 +256,14 @@ a#skipnav {
       .total-value {
         font-size: 5em;
       }
+    }
 
+    h4 {
+      text-align: center;
+      color: white;
+      font-size: $base-font-size * 2;
+      font-weight: 100;
+      padding-top: 15px;
     }
   }
 }
@@ -300,6 +305,10 @@ a#skipnav {
 
         .total-desc {
           font-size: 0.8em;
+        }
+
+        .total-detail {
+          font-size: 0.85em;
         }
       }
 

@@ -11,3 +11,4 @@ description: "Hvor stor andel av domener eid av det offentlige i Norge bruker HT
 data:
   # URL where we download the .gov domain list from.
   domains_url: https://raw.githubusercontent.com/byeskille/norway-gov-domains/master/data/domains.csv
+  analytics_url: ''

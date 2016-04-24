@@ -390,8 +390,7 @@ a#skipnav {
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 65.88078%;
-  margin-left: 17.05961%;
+  width: 100%;
   text-align: center;
   color: white;
   padding-top: 40px; }
@@ -408,16 +407,15 @@ a#skipnav {
   float: left;
   display: block;
   margin-right: 2.35765%;
-  width: 65.88078%;
-  margin-left: 17.05961%;
+  width: 100%;
   padding: 40px 0; }
   #home #results:last-child {
     margin-right: 0; }
   #home #results .https {
     float: left;
     display: block;
-    margin-right: 3.57866%;
-    width: 100%;
+    margin-right: 2.35765%;
+    width: 48.82117%;
     display: -webkit-box;
     display: -moz-box;
     display: box;
@@ -454,11 +452,17 @@ a#skipnav {
     text-align: center; }
     #home #results .https:last-child {
       margin-right: 0; }
-    @media (max-width: 970px) {
+    @media (max-width: 620px) {
       #home #results .https {
         width: 100%; } }
     #home #results .https .total-value {
       font-size: 5em; }
+  #home #results h4 {
+    text-align: center;
+    color: white;
+    font-size: 1.75em;
+    font-weight: 100;
+    padding-top: 15px; }
 
 #analytics #content > header, #https #content > header, #about #content > header, #domain #content > header, #agency #content > header, #accessibility #content > header {
   max-width: 68em;
@@ -489,6 +493,8 @@ a#skipnav {
       font-size: 3em; }
     #analytics #content > header .donut .total-desc, #https #content > header .donut .total-desc, #about #content > header .donut .total-desc, #domain #content > header .donut .total-desc, #agency #content > header .donut .total-desc, #accessibility #content > header .donut .total-desc {
       font-size: 0.8em; }
+    #analytics #content > header .donut .total-detail, #https #content > header .donut .total-detail, #about #content > header .donut .total-detail, #domain #content > header .donut .total-detail, #agency #content > header .donut .total-detail, #accessibility #content > header .donut .total-detail {
+      font-size: 0.85em; }
   #analytics #content > header.chart, #https #content > header.chart, #about #content > header.chart, #domain #content > header.chart, #agency #content > header.chart, #accessibility #content > header.chart {
     padding: 0; }
     #analytics #content > header.chart .description, #https #content > header.chart .description, #about #content > header.chart .description, #domain #content > header.chart .description, #agency #content > header.chart .description, #accessibility #content > header.chart .description {
@@ -518,10 +524,10 @@ a#skipnav {
     text-align: center;
     padding: 30px 0;
     font-size: 1.5em; }
-  #analytics #content #main-content .tab-menu a.tab, #https #content #main-content .tab-menu a.tab, #about #content #main-content .tab-menu a.tab, #domain #content #main-content .tab-menu a.tab, #agency #content #main-content .tab-menu a.tab {
+  #analytics #content #main-content .tab-menu a.tab, #https #content #main-content .tab-menu a.tab, #about #content #main-content .tab-menu a.tab, #domain #content #main-content .tab-menu a.tab, #agency #content #main-content .tab-menu a.tab, #accessibility #content #main-content .tab-menu a.tab {
     background-color: #369;
     color: white; }
-    #analytics #content #main-content .tab-menu a.tab:hover, #analytics #content #main-content .tab-menu a.tab:focus, #https #content #main-content .tab-menu a.tab:hover, #https #content #main-content .tab-menu a.tab:focus, #about #content #main-content .tab-menu a.tab:hover, #about #content #main-content .tab-menu a.tab:focus, #domain #content #main-content .tab-menu a.tab:hover, #domain #content #main-content .tab-menu a.tab:focus, #agency #content #main-content .tab-menu a.tab:hover, #agency #content #main-content .tab-menu a.tab:focus {
+    #analytics #content #main-content .tab-menu a.tab:hover, #analytics #content #main-content .tab-menu a.tab:focus, #https #content #main-content .tab-menu a.tab:hover, #https #content #main-content .tab-menu a.tab:focus, #about #content #main-content .tab-menu a.tab:hover, #about #content #main-content .tab-menu a.tab:focus, #domain #content #main-content .tab-menu a.tab:hover, #domain #content #main-content .tab-menu a.tab:focus, #agency #content #main-content .tab-menu a.tab:hover, #agency #content #main-content .tab-menu a.tab:focus, #accessibility #content #main-content .tab-menu a.tab:hover, #accessibility #content #main-content .tab-menu a.tab:focus {
       background-color: #4080bf;
       color: white; }
 #analytics #content #main-content.white-bkg, #https #content #main-content.white-bkg, #about #content #main-content.white-bkg, #domain #content #main-content.white-bkg, #agency #content #main-content.white-bkg, #accessibility #content #main-content.white-bkg {

@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 
 {% block page_id %}https{% endblock %}
-{% block title %}HTTPS bei Behördenwebseiten - Info{% endblock %}
-{% block description %}Zeigt, wie viele Behördenwebseiten über HTTPS erreichbar sind.{% endblock %}
+{% block title %}HTTPS bei {{ domain_type | domain_type_label('plural') }}webseiten - Info{% endblock %}
+{% block description %}Zeigt, wie viele {{ domain_type | domain_type_label('plural') }}webseiten über HTTPS erreichbar sind.{% endblock %}
 
 {% block content %}
 
@@ -11,8 +11,8 @@
 <section id="main-content" class="white-bkg">
 
   <nav class="tab-menu">
-    <a href="{{ url_for('https_domains') }}" class="tab">Nach Domain</a>
-    <a href="{{ url_for('https_agencies') }}" class="tab">Nach Behörde</a>
+    <a href="{{ url_for('https_domains', domain_type=domain_type) }}" class="tab">Nach Domain</a>
+    <a href="{{ url_for('https_agencies', domain_type=domain_type) }}" class="tab">Nach {{ domain_type | domain_type_label }}</a>
     <span class="tab">Info</span>
   </nav>
 
@@ -31,7 +31,7 @@
         </p>
 
         <p>
-          Es werden die vier "Endpunkte" jeder Domain überprüft: <code>http://</code>, <code>http://www</code>, <code>https://</code> und <code>https://www</code>.
+          Es werden die vier "Endpunkte" jeder Domain überprüft: <code>http://</code>, <code>http://www.</code>, <code>https://</code> und <code>https://www.</code>
         </p>
 
         <p>
@@ -40,7 +40,6 @@
 
         <p>
           Diese Überprüfungen erfolgen mit Hilfe von <a href="https://github.com/benbalter/site-inspector">Open Source</a> <a href="https://github.com/18F/domain-scan">Tools</a>.
-          <!-- und der <a href="https://www.ssllabs.com">SSL Labs</a> <a href="https://github.com/ssllabs/ssllabs-scan/blob/stable/ssllabs-api-docs.md">API</a>.-->
         </p>
 
       </article>
@@ -72,16 +71,6 @@
           <li>"Ja, preloaded" bedeutet, dass diese Domain "preload-ready" ist (siehe oben) <strong>und</strong> die Domain in der öffentlich verfügbaren <a href="https://chromium.googlesource.com/chromium/src/+/master/net/http/transport_security_state_static.json">Chrome preload Liste</a> eingetragen ist.
           </li>
         </ul>
-
-<!--
-        <ul>
-          <li><strong>SSL Labs Grade</strong></li>
-          <li><strong>Möglichkeiten:</strong> T, F, C, B, A-, A, A+</li>
-          <li>A grade measuring the <em>quality</em> of HTTPS configuration, as calculated by <a href="https://www.ssllabs.com">SSL Labs</a>. SSL Labs operates a free and universally referenced benchmarking service.</li>
-          <li>Grades are calculated using a <a href="https://www.ssllabs.com/downloads/SSL_Server_Rating_Guide.pdf">detailed methodology</a> that looks at the strength of cryptographic keys, choices of ciphers, supported protocols, and other relevant standards (such as HSTS).</li>
-          <li>Grades are hyperlinked to detailed reports for each domain on SSL Labs. As an example, view the <a href="https://www.ssllabs.com/ssltest/analyze.html?d=pulse.cio.gov">SSL Labs report for Pulse itself</a>.</li>
-        </ul>
--->
 
       </article>
 

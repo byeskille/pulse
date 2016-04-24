@@ -1,6 +1,7 @@
 import yaml
 import datetime
 from app import models
+from app.data import DOMAIN_TYPE_LABELS, FIELD_MAPPING
 
 # For use in templates.
 def register(app):
@@ -24,6 +25,10 @@ def register(app):
   @app.template_filter('field_map')
   def field_map(value, category=None, field=None):
       return FIELD_MAPPING[category][field][value]
+
+  @app.template_filter('domain_type_label')
+  def domain_type_label(domain_type, mode='singular'):
+      return DOMAIN_TYPE_LABELS[domain_type][mode]
 
   @app.template_filter('percent')
   def percent(num, denom):
