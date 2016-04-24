@@ -60,8 +60,8 @@ publish: deploy.sh
 	rm -rf build || true
 	mkdir -p build
 	python freeze.py
-	echo "https.jetzt" > build/CNAME
-	GIT_DEPLOY_DIR=build GIT_DEPLOY_BRANCH=gh-pages GIT_DEPLOY_REPO=git@github.com:robbi5/pulse.git ./deploy.sh -m "static build" -n
+	echo "https-norge.byeskille.no" > build/CNAME
+	GIT_DEPLOY_DIR=build GIT_DEPLOY_BRANCH=gh-pages GIT_DEPLOY_REPO=git@github.com:byeskille/pulse.git ./deploy.sh -m "static build" -n
 
 update_httpsjetzt:
 	pip install --user -r requirements.txt
