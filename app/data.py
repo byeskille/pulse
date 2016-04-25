@@ -28,7 +28,7 @@ LABELS = {
 
 DOMAIN_TYPES = [
   'federal',
-  'local'
+  'city'
 ]
 
 DOMAIN_TYPE_LABELS = {
@@ -36,7 +36,7 @@ DOMAIN_TYPE_LABELS = {
     'singular': 'Statlig etat',
     'plural': 'Statlige etater'
   },
-  'local': {
+  'city': {
     'singular': 'Kommune eller fylkeskommune',
     'plural': 'Kommuner eller fylkeskommuner'
   }

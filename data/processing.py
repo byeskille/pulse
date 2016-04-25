@@ -652,7 +652,7 @@ def branch_for(agency):
 
 def nice_domain_type_for(domain_type):
   if domain_type == 'Local or regional government':
-    return 'local'
+    return 'city'
   else:
     return 'federal'
 
