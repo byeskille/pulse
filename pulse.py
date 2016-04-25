@@ -2,7 +2,7 @@
 
 import os
 import locale
-locale.setlocale(locale.LC_TIME, "de_DE")
+locale.setlocale(locale.LC_TIME, "en_US")
 
 from flask import Flask
 app = Flask(__name__)
