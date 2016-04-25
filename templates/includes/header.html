@@ -6,10 +6,10 @@
             </h1>
             <ul id="right-nav">
                 <li>
-                    <a href="{{ url_for('https_domains', domain_type='federal') }}">Behörden</a>
+                    <a href="{{ url_for('https_domains', domain_type='federal') }}">Statlige</a>
                 </li>
                 <li>
-                    <a href="{{ url_for('https_domains', domain_type='city') }}">Kommunen</a>
+                    <a href="{{ url_for('https_domains', domain_type='local') }}">Lokale og regionale</a>
                 </li>
                 <li>
                     <a href="{{ url_for('about') }}">Über diese Seite</a>
@@ -24,10 +24,10 @@
       <ul>
         <li><a href="{{ url_for('index') }}">{{ site.name }}</a></li>
         <li>
-            <a href="{{ url_for('https_domains', domain_type='federal') }}">Behörden</a>
+            <a href="{{ url_for('https_domains', domain_type='federal') }}">Statlige</a>
         </li>
         <li>
-            <a href="{{ url_for('https_domains', domain_type='city') }}">Kommunen</a>
+            <a href="{{ url_for('https_domains', domain_type='city') }}">Lokale og regionale</a>
         </li>
         <li>
             <a href="{{ url_for('about') }}">Über diese Seite</a>

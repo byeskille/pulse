@@ -651,8 +651,8 @@ def branch_for(agency):
     return "executive"
 
 def nice_domain_type_for(domain_type):
-  if domain_type == 'City':
-    return 'city'
+  if domain_type == 'Local or regional government':
+    return 'local'
   else:
     return 'federal'
 
