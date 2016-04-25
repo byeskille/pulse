@@ -61,7 +61,7 @@ publish: deploy.sh
 	mkdir -p build
 	python freeze.py
 	echo "https-norge.byeskille.no" > build/CNAME
-	GIT_DEPLOY_DIR=build GIT_DEPLOY_BRANCH=gh-pages GIT_DEPLOY_REPO=git@github.com:byeskille/pulse.git ./deploy.sh -m "static build" -n
+	GIT_DEPLOY_DIR=build GIT_DEPLOY_BRANCH=static-pages-norway GIT_DEPLOY_REPO=git@github.com:byeskille/pulse.git ./deploy.sh -m "static build" -n
 
 update_httpsjetzt:
 	pip3 install --user -r requirements.txt
