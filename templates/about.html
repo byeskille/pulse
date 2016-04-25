@@ -1,18 +1,18 @@
 {% extends "layout.html" %}
 
 {% block page_id %}about{% endblock %}
-{% block title %}Über diese Seite{% endblock %}
-{% block description %}Frequently Asked Questions und weitere Informationen über {{ site.name }}{% endblock %}
+{% block title %}Om denne oversikten{% endblock %}
+{% block description %}Vanlige spørsmål og mer informasjon om {{ site.name }}{% endblock %}
 
 {% block content %}
 <header>
 
-  <h1>Über diese Seite</h1>
+  <h1>Om denne oversikten</h1>
   <p>
-  	<em>{{ site.name }}</em> ist ein Projekt, um zu zeigen, wie viele Behördenwebseiten HTTPS unterstützen.
+  	<em>{{ site.name }}</em> er et lite prosjekt laget av NRK for å vise hvor stor andel av nettsteder drevet av det offentlige i Norge som støtter HTTPS.
   </p>
   <p>
-  	Beachte: <em>{{ site.name }}</em> ist auch ein <strong>Experiment</strong>, verwendet automatische Tools und ist <strong>sicherlich nicht perfekt</strong>. Falls du Fehler findest, <a href="#send-feedback">melde diese bitte</a>.
+  	NB: <em>{{ site.name }}</em> er å regne som et <strong>eksperiment</strong>, bruker automatiske dataverktøy for å undersøke nettstedene og <strong>er helt sikkert ikke perfekt</strong>. Finner du tydelige feil, <a href="#send-feedback">si gjerne fra til NRK ved Øyvind Bye Skille</a>.
   </p>
 
 </header>
@@ -21,28 +21,31 @@
 	<div class="wrapper">
 
 		<header>
-			<h2>Frequently Asked Questions</h2>
+			<h2>Vanlige spørsmål</h2>
 			<ul class="faq-questions">
 				<li>
-					<a href="#what-domains-are-being-measured">Welche Domains werden überprüft?</a>
+					<a href="#what-domains-are-being-measured">Hvilke nettsteder sjekkes?</a>
 				</li>
 				<li>
-					<a href="#why-https">Was ist HTTPS und warum ist das wichtig?</a>
+					<a href="#what-are-measured">Hva sjekkes det for?</a>
 				</li>
 				<li>
-					<a href="#but-its-expensive">Aber HTTPS-Zertifikate sind doch schwierig und teuer?</a>
+					<a href="#why-https">Hva er HTTPS og hvorfor skal man bry seg om det?</a>
 				</li>
 				<li>
-					<a href="#but-why">Aber auf unserer Behördenwebseite kann man sich ja gar nicht anmelden/einloggen/..., warum brauchen wir HTTPS?</a>
+					<a href="#but-its-expensive">Men er ikke HTTPS dyrt og komplisert å få på plass?</a>
 				</li>
 				<li>
-					<a href="#but-its-slow">Aber HTTPS ist doch langsamer?</a>
+					<a href="#but-why">Men på våre nettsider behandles ikke personopplysninger/sensitive opplysninger/brukerdata/innloggin..., hvorfor trenger vi da HTTPS?</a>
 				</li>
 				<li>
-					<a href="#fresh-data">Wann wurden die Daten zuletzt aktualisiert?</a>
+					<a href="#but-its-slow">Men er ikke HTTPS tregere?</a>
 				</li>
 				<li>
-					<a href="#send-feedback">Wohin kann ich Feedback senden?</a>
+					<a href="#fresh-data">Når ble datagrunnlaget for denne siden hentet inn?</a>
+				</li>
+				<li>
+					<a href="#send-feedback">Hvor kan man henvende seg med tilbakemeldinger?</a>
 				</li>
 				<li>
 					<a href="#idea-more-metrics">Ich hätte da eine Idee, was man noch auswerten sollte...</a>
@@ -51,7 +54,7 @@
 					<a href="#my-info">Die Informationen über eine Domain stimmen nicht/sind falsch/...!</a>
 				</li>
 				<li>
-					<a href="#who-created">Wer steckt hinter dieser Seite?</a>
+					<a href="#who-created">Hvem står bak denne oversikten?</a>
 				</li>
 			</ul>
 		</header>
@@ -59,20 +62,29 @@
 		<ul class="faq-answers">
 			<li id="what-domains-are-being-measured">
 				<h3>
-					Welche Domains werden überprüft?
+					Hvilke nettsteder sjekkes?
 				</h3>
 				<p>
-					Aktuell werden Domains aus dem <a href="https://github.com/robbi5/german-gov-domains">german-gov-domains</a>-Datensatz verwendet. Woher diese genau stammen, steht auf der <a href="https://github.com/robbi5/german-gov-domains">Projektseite</a>.
+					Domenene som sjekkes kan knyttes til offentlige etater og virksomheter i Norge både i statlig, kommunal og fylkeskommunal sektor. Domenene tilhører alt fra store statlige organer som departementene til små lokale menigheter. Mer info om hvordan NRK lagde domenelisten kan leses på <a href"https://nrkbeta.no/2016/03/30/slik-undersokte-nrk-offentlige-nettsteder/" title="NRKbeta – Slik undersøkte NRK offentlige nettsteder">NRKbeta</a>. <br/>
+					NRK har etter publisering av nyhetssaker om temaet valgt å gjøre hele domenelisten tilgjengelig som datasettet <a href="https://github.com/byeskille/norway-gov-domains">norway-gov-domains</a>. Dette datasettet er igjen grunnlag for testene denne oversikten er basert på.
 				</p>
+			</li>
+			
+			<li id="what-are-measured">
+				<h3>
+					Hva sjekkes det for?
+				</h3>
+				<p>
+					Alle domenene sjekkes for om de er mulig å besøke nettsidene med sikker tilkobling over HTTPS. Deretter sjekkes det hvordan HTTPS er satt opp; om nettstedet som standard sender all trafikk på HTTPS-protokollen, om nettstedet tvinger alle framtidige besøk til sikker tilkobling (HSTS) og om det er kjente svakheter i oppsettet.</p>
 			</li>
 
 			<li id="why-https">
 				<h3>
-					Was ist HTTPS und warum ist das wichtig?
+					Hva er HTTPS og hvorfor skal man bry seg om det??
 				</h3>
 				<p>
-					<a href="https://de.wikipedia.org/wiki/HTTPS">HTTPS</a> ermöglicht eine sichere Verbindung zwischen Webseiten und ihren Besuchern und wird zum Mindeststandard für öffentliche Web-Services.
-       		So empfiehlt auch das BSI den <a href="https://www.bsi.bund.de/DE/Themen/StandardsKriterien/Mindeststandards/SSL-TLS-Protokoll/SSL-TLS-Protokoll.html">Einsatz von HTTPS als Mindeststandard für die öffentliche Verwaltung</a>.
+					<a href="https://no.wikipedia.org/wiki/HTTPS">HTTPS</a> gjør at kommunikasjonen mellom nettleseren i din datamaskin/mobile enhet og serveren som driver nettstedet skjer sikkert. Dette gjøres ved å sende informasjonen pakket inn i krypterte pakker. HTTPS gjør det mye vanskeligere for noen med onde hensikter å overvåke hva du gjør inne på et nettsted som f.eks. nrk.no eller manipulere sidene for å lure deg. 
+					Derfor er teknologien anbefalt av alle store aktører på nettet som Google og Facebook, og også offentlige organer som Det hvite hus har gått inn for å innføre HTTPS på alle statlige nettsteder i USA. I Norge er anbefalingen fra Difi enn så lenge at det skal være HTTPS på alle offentlige nettsteder som har innlogging eller behandler personopplysninger, men de vurderer å lage strengere anbefalinger etter NRKs saker om temaet.
 				</p>
 				<p>
 					Auch wenn HTTPS eingesetzt wird, bedeutet das nicht, dass eine Webseite nicht trotzdem gehackt werden kann. Für mehr Informationen, was HTTPS tut (und was es nicht tun kann), <a href="https://https.cio.gov/faq/">besuche die HTTPS FAQ</a> (in Englisch).
@@ -153,13 +165,13 @@
 
 			<li id="who-created">
 				<h3>
-					Wer steckt hinter dieser Seite?
+					Hvem står bak denne oversikten?
 				</h3>
 				<p>
-					Diese Seite entstand am <a href="http://de.opendataday.org/">OpenDataDay 2016</a> und wurde von Dennis Knorr, <a href="https://robbi5.de">Maximilian Richt</a> und <a href="https://sectio-aurea.org">Ernesto Ruge</a> erstellt.
+					Denne oversikten er laget av <a href="https://nrkbeta.no/2016/03/30/slik-undersokte-nrk-offentlige-nettsteder/" title="Slik undersøkte NRK offentlige nettsteder">NRK</a> i etterkant av <a href="http://www.nrk.no/emne/datasikkerhet-i-norge-1.12867300" title="NRK.no – Emne: Datasikkerhet i Norge">en rekke saker</a> om <a href="http://www.nrk.no/dokumentar/xl/usikkert-nett-1.12854582" title="NRK.no – Usikkert nett: Bare 422 av nesten 10 000 norske offentlige nettsteder var beskyttet av kryptering">HTTPS-bruk i det offentlige i Norge</a>. Oversikten er laget av <a href="https://byeskille.no/2016/03/usikre-offentlige-nettsider-https-usage-on-government-domains-in-norway/" title="byeskille.no – USIKRE OFFENTLIGE NETTSIDER // HTTPS USAGE ON GOVERNMENT DOMAINS IN NORWAY">Øyvind Bye Skille</a>.
 				</p>
 				<p>
-					Die Seite ist <a href="https://github.com/robbi5/pulse">Open Source</a> und basiert auf <a href="https://pulse.cio.gov">the pulse of the federal .gov webspace</a> von <a href="https://18f.gsa.gov">18F</a>/<a href="http://gsa.gov">General Services Administration</a>. Danke!
+					Koden for denne siden er <a href="https://github.com/byeskille/pulse">Open Source</a> og basert på et utgangspunkt fra kode laget på bestilling for Det hvite hus <a href="https://pulse.cio.gov">the pulse of the federal .gov webspace</a> av den amerikanske statlige virksomheten <a href="https://18f.gsa.gov">18F</a>/<a href="http://gsa.gov">General Services Administration</a>. Tusen takk også til <a href="https://robbi5.de/" title="Maximilian Richt – robbi5.de">Maximilian Richt</a> / <a href="https://github.com/robbi5" title="@robbi5 på Github">@robbi5</a> for den tyske versjonen <a href="https://github.com/robbi5/pulse" title="github: @robbi5/pulse (https.jetzt)">https.jetzt</a> som også har vært utgangspunkt for disse sidene med kode og svar på spørsmål på e-post.
 				</p>
 				<p><a href="https://robbi5.de/imprint">Impressum</a></p>
 			</li>
