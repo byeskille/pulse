@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 
 {% block page_id %}https{% endblock %}
-{% block title %}HTTPS bei {{ domain_type | domain_type_label('plural') }}webseiten - Alle {{ domain_type | domain_type_label('plural') }}{% endblock %}
-{% block description %}Zeigt, wie viele {{ domain_type | domain_type_label('plural') }}webseiten über HTTPS erreichbar sind.{% endblock %}
+{% block title %}HTTPS på {{ domain_type | domain_type_label('plural') }}nettsteder - Alle {{ domain_type | domain_type_label('plural') }}{% endblock %}
+{% block description %}Måler, hvor mange {{ domain_type | domain_type_label('plural') }}nettsteder som er tilgjengelige over HTTPS.{% endblock %}
 
 {% block content %}
 
@@ -10,8 +10,8 @@
 
 <section id="main-content" class="white-bkg">
   <nav class="tab-menu">
-    <a href="{{ url_for('https_domains', domain_type=domain_type) }}" class="tab">Nach Domain</a>
-    <span class="tab">Nach {{ domain_type | domain_type_label }}</span>
+    <a href="{{ url_for('https_domains', domain_type=domain_type) }}" class="tab">Oversikt domener</a>
+    <span class="tab">Oversikt {{ domain_type | domain_type_label }}</span>
     <a href="{{ url_for('https_guide', domain_type=domain_type) }}" class="tab">Info</a>
   </nav>
   <div class="wrapper">
@@ -19,9 +19,9 @@
         <thead>
           <tr>
             <th class="all" scope="col">{{ domain_type | domain_type_label }}</th>
-            <th class="all" scope="col">Anzahl Domains</th>
-            <th class="min-tablet" scope="col">Bietet HTTPS</th>
-            <th class="min-tablet" scope="col">Erzwingt HTTPS</th>
+            <th class="all" scope="col">Antall domener</th>
+            <th class="min-tablet" scope="col">Bruker HTTPS</th>
+            <th class="min-tablet" scope="col">Alt på HTTPS</th>
             <th class="desktop" scope="col">Strict Transport Security (HSTS)</th>
             <!--<th class="none" scope="col">SSL Labs (A- or higher)</th>-->
           </tr>

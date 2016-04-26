@@ -33,13 +33,7 @@
 					<a href="#why-https">Hva er HTTPS og hvorfor skal man bry seg om det?</a>
 				</li>
 				<li>
-					<a href="#but-its-expensive">Men er ikke HTTPS dyrt og komplisert å få på plass?</a>
-				</li>
-				<li>
-					<a href="#but-why">Men på våre nettsider behandles ikke personopplysninger/sensitive opplysninger/brukerdata/innloggin..., hvorfor trenger vi da HTTPS?</a>
-				</li>
-				<li>
-					<a href="#but-its-slow">Men er ikke HTTPS tregere?</a>
+					<a href="#but-why">Men på våre nettsider behandles ikke personopplysninger/sensitive opplysninger/brukerdata/innlogging..., hvorfor trenger vi da HTTPS?</a>
 				</li>
 				<li>
 					<a href="#fresh-data">Når ble datagrunnlaget for denne siden hentet inn?</a>
@@ -48,10 +42,7 @@
 					<a href="#send-feedback">Hvor kan man henvende seg med tilbakemeldinger?</a>
 				</li>
 				<li>
-					<a href="#idea-more-metrics">Ich hätte da eine Idee, was man noch auswerten sollte...</a>
-				</li>
-				<li>
-					<a href="#my-info">Die Informationen über eine Domain stimmen nicht/sind falsch/...!</a>
+					<a href="#my-info">Informasjonen dere viser fram om et domene stemmer ikke!</a>
 				</li>
 				<li>
 					<a href="#who-created">Hvem står bak denne oversikten?</a>
@@ -94,75 +85,50 @@
 				</p>
 			</li>
 
-			<li id="but-its-expensive">
-				<h3>
-					Aber HTTPS-Zertifikate sind doch schwierig und teuer?
-				</h3>
-				<p>
-					Nein. Nicht mehr. Mit <a href="https://letsencrypt.org">Let's Encrypt</a> gibt es eine einfache, sichere und automatisierte Möglichkeit, HTTPS-Zertifikate für Webserver zu bekommen - und noch dazu ist sie kostenlos.
-				</p>
-				<p>
-					Zudem unterhält der Bund und viele Länder eigene Zertifizierungsstellen, die den eigenen Behörden Zertifikate ausstellen können.
-				</p>
-			</li>
+			
 
 			<li id="but-why">
 				<h3>
-					Aber auf unserer Behördenwebseite kann man sich ja gar nicht anmelden/einloggen/..., warum brauchen wir HTTPS?
+					Men på våre nettsider behandles ikke personopplysninger/sensitive opplysninger/brukerdata/innlogging..., hvorfor trenger vi da HTTPS?
 				</h3>
 				<p>
-					Die verschlüsselte Verbindung sichert nicht nur persönliche Daten, die zwischen der Besucher*in und der Webseite ausgetauscht werden. Sie verhindert auch, dass Daten zwischen den beiden unterwegs manipuliert werden - etwa um die Seite zu verändern und <a href="https://citizenlab.org/2014/08/cat-video-and-the-death-of-clear-text/">Werbung oder Malware</a> einzuschleusen. Dies ist besonders bei öffentlichen Hotspots öfter der Fall.
+					En sikker og kryptert forbindelse kan beskytte mer enn personopplysninger, som sendes mellom nettleser og nettsted. HTTPS forhindrer også at nettstedet kan bli manipulert på veien til brukerne over nettet - noe som er kjent at brukes for å drive svindel eller spre datavirus eller annen skadevare.
 				</p>
 				<p>
-					Zudem können Angreifer, die die Verbindung zwischen der Besucher*in und der Webseite überwachen, durch HTTPS nicht sehen, welche Seite genau aufgerufen wurde.
+					Ondsinnede aktører kan heller ikke se innholdet som overføres med HTTPS hvis de forsøker å overvåke et nettsted eller brukere som besøker nettstedet.
 				</p>
 			</li>
 
-			<li id="but-its-slow">
-				<h3>
-					Aber HTTPS ist doch langsamer?
-				</h3>
-				<p>
-					<a href="https://istlsfastyet.com">Nein.</a>
-				</p>
-			</li>
 
 			<li id="fresh-data">
-				<h3>Wann wurden die Daten zuletzt aktualisiert?</h3>
+				<h3>Når ble datagrunnlaget for denne siden hentet inn?</h3>
 
 				<p>
-					Die Liste der Domains und die Daten über die HTTPS-Verwendung wurden zuletzt am <strong>{{ scan_date | date("%d. %B %Y") }}</strong> aktualisiert.
+					Domenene ble sist sjekket den <strong>{{ scan_date | date("%d. %B %Y") }}</strong>.
 				</p>
 			</li>
 
 			<li id="send-feedback">
 				<h3>
-					Wohin kann ich Feedback senden?
+					Hvor kan man henvende seg med tilbakemeldinger?
 				</h3>
 				<p>
-					Für Feedback oder Fragen über <em>{{ site.name }}</em>, <a href="https://github.com/robbi5/pulse/issues">öffne bitte ein Issue in unserem GitHub Repository</a> oder schicke einen Tweet an <a href="https://twitter.com/robbi5">@robbi5</a>.
+					For tilbakemeldinger og spørsmål om <em>{{ site.name }}</em>, <a href="https://github.com/byeskille/pulse/issues">kan tekniske kyndige åpne en <em>issue</em> på Github</a>, andre kan sende en e-post til <a href="mailto:oyvind.bye.skille@nrk.no">oyvind.bye.skille@nrk.no</a>.
 				</p>
 			</li>
 
-			<li id="idea-more-metrics">
-				<h3>
-					Ich hätte da eine Idee, was man noch auswerten sollte...
-				</h3>
-				<p>
-					Wunderbar! Falls du Programmierkenntnisse besitzt, freuen wir uns über einen Pull-Request auf <a href="https://github.com/robbi5/pulse/issues">unserem GitHub Repository</a>. Falls nicht - nicht schlimm, wir freuen uns auch über Ideen in Form eines <a href="https://github.com/robbi5/pulse/issues">Issues auf unserem GitHub Repository</a> oder einen Tweet an <a href="https://twitter.com/robbi5">@robbi5</a>.
-				</p>
 			</li>
 
 			<li id="my-info">
 				<h3>
-					Die Informationen über eine Domain stimmen nicht/sind falsch/...!
+					Informasjonen dere viser fram om et domene stemmer ikke!
 				</h3>
 				<p>
-					Wenn du gerade erst etwas an der Domain verändert hast, um ein Problem zu beseitigen, kann es sein, dass sich die Daten auf <em>{{ site.name }}</em> erst später aktualisieren.
-					Gerade wird ein Datenupdate noch manuell angestoßen, sodass es etwas dauern kann, bis es auf dieser Seite korrekt erscheint.
+					Om det er gjort endringer for et domene, f.eks. for å få på plass HTTPS eller rette et problem, er det ikke sikkert at oversikten har fått med seg endringen.< br/>
+					Sjekk derfor først når oversikten sist ble oppdatert, for tiden er siste oppdatering gjort den <strong>{{ scan_date | date("%d. %B %Y") }}</strong>.
 				</p>
 				<p>
-					Wenn du einen Fehler gefunden hast, <a href="https://github.com/robbi5/pulse/issues">öffne bitte ein Issue in unserem GitHub Repository</a>.
+					Hvis det virker som oversikten har blitt oppdatert etter at domenet ble endret, eller du har funnet en annen feil: Si gjerne fra til <a href="mailto:oyvind.bye.skille@nrk.no">Øyvind Bye Skille</a>.
 				</p>
 			</li>
 
@@ -176,7 +142,7 @@
 				<p>
 					Koden for denne siden er <a href="https://github.com/byeskille/pulse">Open Source</a> og basert på et utgangspunkt fra kode laget på bestilling for Det hvite hus <a href="https://pulse.cio.gov">the pulse of the federal .gov webspace</a> av den amerikanske statlige virksomheten <a href="https://18f.gsa.gov">18F</a>/<a href="http://gsa.gov">General Services Administration</a>. Tusen takk også til <a href="https://robbi5.de/" title="Maximilian Richt – robbi5.de">Maximilian Richt</a> / <a href="https://github.com/robbi5" title="@robbi5 på Github">@robbi5</a> for den tyske versjonen <a href="https://github.com/robbi5/pulse" title="github: @robbi5/pulse (https.jetzt)">https.jetzt</a> som også har vært utgangspunkt for disse sidene med kode og svar på spørsmål på e-post.
 				</p>
-				<p><a href="https://robbi5.de/imprint">Impressum</a></p>
+				
 			</li>
 		</ul>
 	</div>

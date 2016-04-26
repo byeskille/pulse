@@ -1,3 +1,22 @@
+## https-norge
+
+Dette er en norsk versjon av prosjektet [pulse](https://github.com/18F/pulse) (The pulse of the federal .gov webspace) for å vise hvordan det står til med HTTPS-bruken på domener eid av offentlige etater og virksomheter i Norge.
+Løsningen for Norge benytter seg av en liste domener samlet inn av NRK. Domenelisten er tilgjengelig som datasettet [norway-gov-domains](https://github.com/byeskille/norway-gov-domains).
+
+Prosjektet er laget av NRK, og journalist Øyvind Bye Skille, i bakkant av en rekke saker om temaet.
+Se blant annet:
+
+* [http://www.nrk.no/dokumentar/xl/1.12854582](http://www.nrk.no/dokumentar/xl/1.12854582)
+* [http://www.nrk.no/dokumentar/xl/1.12859753](http://www.nrk.no/dokumentar/xl/1.12859753)
+
+Løsningen er helt og fullt basert på kode fra virksomheten [18F](https://18f.gsa.gov), underlagt [General Services Administration](http://gsa.gov) og Det hvite hus.
+Denne koden er så videre bearbeidet for bruk til en tysk versjon [https.jetzt!](https://https.jetzt) av [robbi5](https://github.com/robbi5/pulse).
+
+Den norske versjonen er så igjen bygget på den tyske, en fork.
+Tusen takk til begge miljøer for kode og spesielt til [robbi5](https://robbi5.de) for svar på noen dumme spørsmål fra en journalist som ikke egentlig er utvikler.
+
+Det er ikke laget noen fullstendig dokumentasjon for den norske versjonen, men viderebringer info fra den tyske og amerikanske under.
+
 ## https.jetzt!
 
 Dieses Projekt bietet eine Übersicht, ob Domains deutscher Behörden das HTTPS-Protokoll (<code>https://</code>) unterstützen, und - falls ja - wie stark diese Unterstützung ist.

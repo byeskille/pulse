@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 
 {% block page_id %}https{% endblock %}
-{% block title %}HTTPS bei {{ domain_type | domain_type_label('plural') }}webseiten - Info{% endblock %}
-{% block description %}Zeigt, wie viele {{ domain_type | domain_type_label('plural') }}webseiten über HTTPS erreichbar sind.{% endblock %}
+{% block title %}HTTPS på {{ domain_type | domain_type_label('plural') }}nettsteder - Info{% endblock %}
+{% block description %}Måler, hvor mange {{ domain_type | domain_type_label('plural') }}nettsteder som er tilgjengelige over HTTPS.{% endblock %}
 
 {% block content %}
 
@@ -11,8 +11,8 @@
 <section id="main-content" class="white-bkg">
 
   <nav class="tab-menu">
-    <a href="{{ url_for('https_domains', domain_type=domain_type) }}" class="tab">Nach Domain</a>
-    <a href="{{ url_for('https_agencies', domain_type=domain_type) }}" class="tab">Nach {{ domain_type | domain_type_label }}</a>
+    <a href="{{ url_for('https_domains', domain_type=domain_type) }}" class="tab">Oversikt domener</a>
+    <a href="{{ url_for('https_agencies', domain_type=domain_type) }}" class="tab">Oversikt {{ domain_type | domain_type_label }}</a>
     <span class="tab">Info</span>
   </nav>
 
@@ -20,55 +20,55 @@
 
     <div class="guide">
 
-      <h2>Was bedeuten die Daten an den Domains? Warum braucht man HTTPS? Diese und weitere Fragen werden auch in der <a href="{{ url_for('about') }}">FAQ</a> beantwortet.</h2>
+      <h2>Hva betyr informasjonen om domenene? Hvorfor bruker man HTTPS? Disse og lignende spørsmål blir også tatt opp i oversikten <a href="{{ url_for('about') }}">Vanlige spørsmål</a> .</h2>
 
       <article>
 
-        <h3>Welche Domains werden überprüft?</h3>
+        <h3>Hvilke domener sjekkes?</h3>
 
         <p>
-          Aktuell werden Domains aus dem <a href="https://github.com/robbi5/german-gov-domains">german-gov-domains</a>-Datensatz, verwendet. Woher diese genau stammen, steht auf der <a href="https://github.com/robbi5/german-gov-domains">Projektseite</a>.
+          Domenene som sjekkes kan knyttes til offentlige etater og virksomheter i Norge både i statlig, kommunal og fylkeskommunal sektor. Domenene tilhører alt fra store statlige organer som departementene til små lokale menigheter. Mer info om hvordan NRK lagde domenelisten kan leses på <a href"https://nrkbeta.no/2016/03/30/slik-undersokte-nrk-offentlige-nettsteder/" title="NRKbeta – Slik undersøkte NRK offentlige nettsteder">NRKbeta</a>. <br/>
+					NRK har etter publisering av nyhetssaker om temaet valgt å gjøre hele domenelisten tilgjengelig som datasettet <a href="https://github.com/byeskille/norway-gov-domains">norway-gov-domains</a>. Dette datasettet er igjen grunnlag for testene denne oversikten er basert på.        </p>
+
+        <p>
+          Fra oversikten sjekkes fire ulike "Endepunkter" for hvert domene: <code>http://</code>, <code>http://www.</code>, <code>https://</code> og <code>https://www.</code>
         </p>
 
         <p>
-          Es werden die vier "Endpunkte" jeder Domain überprüft: <code>http://</code>, <code>http://www.</code>, <code>https://</code> und <code>https://www.</code>
+          Det blir også sjekket om domener bare videresender trafikken til et annet nettsted.
         </p>
 
         <p>
-          Es werden auch Domains überprüft, die nur auf eine andere Domain weiterleiten.
-        </p>
-
-        <p>
-          Diese Überprüfungen erfolgen mit Hilfe von <a href="https://github.com/benbalter/site-inspector">Open Source</a> <a href="https://github.com/18F/domain-scan">Tools</a>.
+         Testen er gjort mulig ved hjelp <a href="https://github.com/benbalter/site-inspector">Open Source</a> <a href="https://github.com/18F/domain-scan">verktøy</a>.
         </p>
 
       </article>
 
       <article>
 
-        <h3>Felder</h3>
+        <h3>Felt i oversikten</h3>
 
         <ul>
-          <li><strong>Bietet HTTPS</strong></li>
-          <li><strong>Möglichkeiten:</strong> Nein, Ja</li>
+          <li><strong>Bruker HTTPS</strong></li>
+          <li><strong>Mulige svar:</strong> Nei, Ja</li>
           <li>
-            Ob eine Webseite mit HTTPS benutzt werden kann, entweder direkt auf der Domain oder der <code>www</code>-Subdomain.<br/>
-            Seiten, die von HTTPS auf HTTP umleiten zählen als unsicher und bekommen ein Nein.</li>
+            Om et nettsted kan nås via HTTPS, enten direkte til domenet eller <code>www</code>-subdomenet.<br/>
+            Nettsteder, som videresender alle forespørsler fra HTTPS til HTTLP telles som usikre og føres som Nei.</li>
         </ul>
 
         <ul>
-          <li><strong>Erzwingt HTTPS</strong></li>
-          <li><strong>Möglichkeiten:</strong> Nein, Ja</li>
-          <li>Ob eine Webseite standardmäßig HTTPS bietet. Dies kann passieren, indem HTTP auf HTTPS umleitet oder sogar nur über HTTPS verfügbar gemacht wird.</li>
+          <li><strong>Alt på HTTPS</strong></li>
+          <li><strong>Mulige svar:</strong> Nei, Ja</li>
+          <li>Om et nettsted virker å bruke HTTPS som standard for all trafikk. Dette kan være tilfelle om trafikk på usikker HTTP omdirigieres til HTTPS, eller om nettstedet bare er tilgjengelig på HTTPS.</li>
         </ul>
 
         <ul>
           <li><strong>Strict Transport Security (HSTS)</strong></li>
-          <li><strong>Möglichkeiten:</strong> Nein, Ja, "Ja, preload-ready", "Ja, preloaded"</li>
-          <li>Ob eine Domain <a href="https://https.cio.gov/hsts/">HTTP Strict Transport Security</a> implementiert. Dies bedeutet, dass <a href="http://caniuse.com/#search=hsts">unterstütze Browser</a> nur noch über HTTPS mit einer Domain kommunizieren, selbst wenn man auf einen HTTP-Link klickt.</li>
-          <li>"Ja" bedeutet, dass ein <code>Strict-Transport-Security</code>-Header ausgeliefert wird.</li>
-          <li>"Ja, preload-ready" bedeutet, dass auf dieser Domain ein HSTS-Header ausgeliefert wird, der für alle Subdomains gilt und für <a href="https://hstspreload.appspot.com">preloading</a> markiert ist.</li>
-          <li>"Ja, preloaded" bedeutet, dass diese Domain "preload-ready" ist (siehe oben) <strong>und</strong> die Domain in der öffentlich verfügbaren <a href="https://chromium.googlesource.com/chromium/src/+/master/net/http/transport_security_state_static.json">Chrome preload Liste</a> eingetragen ist.
+          <li><strong>Mulige svar:</strong> Nei, Ja, "Ja, preload-klar", "Ja, preloaded"</li>
+          <li>Om et domene har implementert <a href="https://https.cio.gov/hsts/">HTTP Strict Transport Security</a>. Det betyr, at <a href="http://caniuse.com/#search=hsts">nettlesere som støtter teknologien</a> bare vil kommunisere med nettstedet over HTTPS, selv om man klikker på ei lenke som begynner med HTTP.</li>
+          <li>"Ja" betyr, at <code>Strict-Transport-Security</code>er satt i HTTP-sikkerhetshode for nettstedet.</li>
+          <li>"Ja, preload-klar" betyr, at dette domenet har HSTS i HTTP-sikkerhetshode, som gjelder for alle subdomener og for er markert for <a href="https://hstspreload.appspot.com">preloading</a>.</li>
+          <li>"Ja, preloaded" betyr, at dette domenet er "preload-klar" (se over) <strong>og</strong> domenet er oppført i <a href="https://chromium.googlesource.com/chromium/src/+/master/net/http/transport_security_state_static.json">Chrome preload-listen</a>.
           </li>
         </ul>
 

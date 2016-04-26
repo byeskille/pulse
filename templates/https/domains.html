@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 
 {% block page_id %}https{% endblock %}
-{% block title %}HTTPS bei {{ domain_type | domain_type_label('plural') }}webseiten - Alle Domains{% endblock %}
-{% block description %}Zeigt, wie viele {{ domain_type | domain_type_label('plural') }}webseiten über HTTPS erreichbar sind.{% endblock %}
+{% block title %}HTTPS på {{ domain_type | domain_type_label('plural') }}nettsteder - Alle domener{% endblock %}
+{% block description %}Måler, hvor mange {{ domain_type | domain_type_label('plural') }}nettsteder som er tilgjengelige over HTTPS.{% endblock %}
 
 {% block content %}
 
@@ -10,22 +10,22 @@
 
 <section id="main-content" class="white-bkg">
   <nav class="tab-menu">
-    <span class="tab">Nach Domain</span>
-    <a href="{{ url_for('https_agencies', domain_type=domain_type) }}" class="tab">Nach {{ domain_type | domain_type_label }}</a>
+    <span class="tab">Oversikt domener</span>
+    <a href="{{ url_for('https_agencies', domain_type=domain_type) }}" class="tab">Oversikt {{ domain_type | domain_type_label }}</a>
     <a href="{{ url_for('https_guide', domain_type=domain_type) }}" class="tab">Info</a>
   </nav>
   <div class="wrapper">
     <table class="domain responsive https">
         <thead>
           <tr>
-            <th class="all">Domain</th>
-            <th class="never">Canonical</th>
+            <th class="all">Domene</th>
+            <th class="never">Canonical/hovedadresse</th>
             <th class="none">{{ domain_type | domain_type_label }}</th>
-            <th class="min-tablet">Bietet HTTPS</th>
-            <th class="min-tablet">Erzwingt HTTPS</th>
+            <th class="min-tablet">Bruker HTTPS</th>
+            <th class="min-tablet">Alt på HTTPS</th>
             <th class="min-tablet-l">Strict Transport Security (HSTS)</th>
             <!--<th class="none">SSL Labs Grade</th>-->
-            <th class="none" scope="col">Details</th>
+            <th class="none" scope="col">Detaljer</th>
             <!--<th class="none">TLS Issues</th>-->
           </tr>
         </thead>
