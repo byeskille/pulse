@@ -17,25 +17,25 @@ $(document).ready(function () {
 
   var names = {
     uses: {
-      "-1": "Nein",
-      0: "Nein",
+      "-1": "Nei",
+      0: "Nei",
       1: "Ja", // (with certificate chain issues)
       2: "Ja"
     },
 
     enforces: {
       0: "", // N/A (no HTTPS)
-      1: "Nein", // Present, not default
+      1: "Nei", // Present, not default
       2: "Ja", // Defaults eventually to HTTPS
       3: "Ja" // Defaults eventually + redirects immediately
     },
 
     hsts: {
       "-1": "", // N/A
-      0: "Nein", // No
+      0: "Nei", // No
       1: "Ja", // HSTS on only that domain
       2: "Ja", // HSTS on subdomains
-      3: "Ja, preload-ready", // HSTS on subdomains + preload flag
+      3: "Ja, preload-klar", // HSTS on subdomains + preload flag
       4: "Ja, preloaded" // In the HSTS preload list
     },
 
@@ -92,32 +92,32 @@ $(document).ready(function () {
 
     if (https >= 1) {
       if (behavior >= 2)
-        details = "Diese Domain erzwingt HTTPS. ";
+        details = "Dette domenet har HTTPS som standard for all trafikk";
       else
-        details = "Diese Domain unterstützt HTTPS, aber erzwingt es nicht. ";
+        details = "Dette domenet støtter HTTPS, men har det ikke som standard for all trafikk. ";
 
       if (hsts == 0) {
         // HSTS is considered a No *because* its max-age is too weak.
         if ((hsts_age > 0) && (hsts_age < 10886400))
-          details += "Das " + l("hsts", "HSTS") + " Maximalalter (" + hsts_age + " Sekunden) ist zu kurz und sollte auf mindestens 1 Jahr (31536000 Sekunden) erhöht werden.";
+          details += "Das " + l("hsts", "HSTS") + " Maks alder (" + hsts_age + " sekunder) er regnet å være kort og er anbefalt å være satt til minst 1 år (31536000 sekunder).";
         else
-          details += l("hsts", "HSTS") + " ist nicht aktiviert.";
+          details += l("hsts", "HSTS") + " er ikke aktivert.";
       }
       else if (hsts == 1)
-        details += l("hsts", "HSTS") + " ist aktiviert, aber nicht für Subdomains und nicht für eine " + l("preload", "Hinterlegung in Browsern (preloading)") + "  bereit.";
+        details += l("hsts", "HSTS") + " er aktivert, men ikke for subdomener og ikke klargjort for " + l("preload", "forhåndslasting av HSTS i nettleser (preloading)") + ".";
       else if (hsts == 2)
-        details += l("hsts", "HSTS") + " ist für alle Subdomains aktiviert, aber nicht für eine " + l("preload", "Hinterlegung in Browsern (preloading)") + " bereit.";
+        details += l("hsts", "HSTS") + " er aktivert for alle subdomener, men ikke klargjort for " + l("preload", "forhåndslasting av HSTS i nettleser (preloading)") + ".";
       else if (hsts == 3)
-        details += l("hsts", "HSTS") + " ist für alle Subdomains aktiviert und " + l("preload", "in Browsern hinterlegt (preload)") + ".";
+        details += l("hsts", "HSTS") + " er aktivert for alle subdomener og " + l("preload", "forhåndslasting av HSTS i nettleser (preload)") + " er også på plass.";
 
       // HSTS is strong enough to get a yes, but still less than a year.
       if (hsts > 0 && (hsts_age < 31536000))
-        details += " Das HSTS Maximalalter (" + hsts_age + " Sekunden) sollte auf mindestens 1 Jahr (31536000 Sekunden) erhöht werden.";
+        details += "HSTS maks alder (" + hsts_age + " sekunder) burde minst være satt til 1 år (31536000 sekunder).";
 
     } else if (https == 0)
-      details = "Diese Domain leitet Besucher von HTTPS auf HTTP um.";
+      details = "Dette domenet sender besøkende til HTTPS tilbake til usikker HTTP.";
     else if (https == -1)
-      details = "Diese Domain unterstützt kein HTTPS.";
+      details = "Dette domenet støtter ikke HTTPS.";
 
     return details;
   };
@@ -143,34 +143,34 @@ $(document).ready(function () {
       return null;
 
     if (row.https.grade < 0)
-      return "Keine Daten.";
+      return "Mangler data.";
 
     var config = [];
 
     if (row.https.uses == 1)
-      config.push("benutzt eine Zertifikatskette, die für manche Besucher nicht valide ist");
+      config.push("benytter sikkerhetssertifikater, som for mange besøkende ikke vil være gyldig");
 
     if (row.https.sig == "SHA1withRSA")
-      config.push("benutzt ein Zertifikat mit einer " + l("sha1", "schwachen SHA-1-Signatur"));
+      config.push("benytter et sikkerhetssertifikat med en " + l("sha1", "svak SHA-1-signatur"));
 
     if (row.https.ssl3 == true)
-      config.push("unterstützt das " + l("ssl3", "unsichere SSLv3 Protokoll"));
+      config.push("støtter den " + l("ssl3", "usikre SSLv3-protokollen"));
 
     if (row.https.rc4 == true)
-      config.push("unterstützt die " + l("rc4", "veraltete RC4-Verschlüsselung"));
+      config.push("støtter den " + l("rc4", "foreldede RC4-krypteringsteknologien"));
 
     if (row.https.tls12 == false)
-      config.push("fehlt die Unterstützung für die " + l("tls", "aktuellste Version von TLS"));
+      config.push("mangler støtte for " + l("tls", "mest moderne formen for TLS-krypteringsprotokoll"));
 
     // Don't bother remarking if FS is Modern or Robust.
     if (row.https.fs <= 1)
-      config.push("sollte " + l("fs", "forward secrecy", true) + " aktivieren");
+      config.push("burde aktivere" + l("fs", "forward secrecy", true) + ".");
 
     var issues = "";
     if (config.length > 0)
-      issues += "Diese Domain " + config.join(", ") + ". ";
+      issues += "Dette domenet " + config.join(", ") + ". ";
 
-    issues += "Für mehr Details den " + l(labsUrlFor(row["Domain"]), "vollen SSL Labs-Report") + " lesen.";
+    issues += "For mer detaljer se " + l(labsUrlFor(row["Domain"]), "fullstendig SSL Labs-Report") + ".";
 
     return issues;
   };
@@ -244,10 +244,10 @@ $(document).ready(function () {
       pageLength: 25,
 
       "oLanguage": {
-        "sSearch": "Suche:",
-        "sLengthMenu": "Zeige _MENU_ Einträge",
-        "sInfo": "Zeige _START_ - _END_ von _TOTAL_ Einträgen",
-        "sInfoFiltered": "(von insgesamt _MAX_ Einträgen)",
+        "sSearch": "Søk:",
+        "sLengthMenu": "Vis _MENU_ oppføringer",
+        "sInfo": "Vis _START_ - _END_ av _TOTAL_ oppføringer",
+        "sInfoFiltered": "(av samlede _MAX_ oppføringer)",
         "oPaginate": {
           "sPrevious": "<<",
           "sNext": ">>"
