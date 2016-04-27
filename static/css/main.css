@@ -202,7 +202,7 @@ p {
   font-size: 1.0em; }
 
 body {
-  background-color: #F80; }
+  background-color: #369; }
 
 a {
   color: white;
@@ -225,7 +225,7 @@ footer {
   color: white; }
   .button:hover, .button:focus {
     background-color: white;
-    color: #F80;
+    color: #369;
     text-decoration: none; }
 
 .wrapper {
@@ -243,7 +243,7 @@ a#skipnav {
   position: absolute;
   top: -70px;
   left: 0px;
-  color: #F80;
+  color: #369;
   background: transparent;
   -webkit-transition: top 1s ease-out, background 1s linear;
   -moz-transition: top 1s ease-out, background 1s linear;
@@ -323,7 +323,7 @@ a#skipnav {
         .site-header > nav #main-nav ul li a {
           padding: 17px 24px; }
           .site-header > nav #main-nav ul li a:hover {
-            color: #F80;
+            color: #369;
             background-color: white; }
 .site-header #menu-btn {
   display: none; }
@@ -525,7 +525,7 @@ a#skipnav {
     padding: 30px 0;
     font-size: 1.5em; }
   #analytics #content #main-content .tab-menu a.tab, #https #content #main-content .tab-menu a.tab, #about #content #main-content .tab-menu a.tab, #domain #content #main-content .tab-menu a.tab, #agency #content #main-content .tab-menu a.tab, #accessibility #content #main-content .tab-menu a.tab {
-    background-color: #F80;
+    background-color: #369;
     color: white; }
     #analytics #content #main-content .tab-menu a.tab:hover, #analytics #content #main-content .tab-menu a.tab:focus, #https #content #main-content .tab-menu a.tab:hover, #https #content #main-content .tab-menu a.tab:focus, #about #content #main-content .tab-menu a.tab:hover, #about #content #main-content .tab-menu a.tab:focus, #domain #content #main-content .tab-menu a.tab:hover, #domain #content #main-content .tab-menu a.tab:focus, #agency #content #main-content .tab-menu a.tab:hover, #agency #content #main-content .tab-menu a.tab:focus, #accessibility #content #main-content .tab-menu a.tab:hover, #accessibility #content #main-content .tab-menu a.tab:focus {
       background-color: #4080bf;
@@ -533,10 +533,10 @@ a#skipnav {
 #analytics #content #main-content.white-bkg, #https #content #main-content.white-bkg, #about #content #main-content.white-bkg, #domain #content #main-content.white-bkg, #agency #content #main-content.white-bkg, #accessibility #content #main-content.white-bkg {
   background-color: white; }
   #analytics #content #main-content.white-bkg a, #https #content #main-content.white-bkg a, #about #content #main-content.white-bkg a, #domain #content #main-content.white-bkg a, #agency #content #main-content.white-bkg a, #accessibility #content #main-content.white-bkg a {
-    color: #FFBE73;
+    color: #0066CC;
     font-weight: 900; }
     #analytics #content #main-content.white-bkg a:hover, #analytics #content #main-content.white-bkg a:focus, #https #content #main-content.white-bkg a:hover, #https #content #main-content.white-bkg a:focus, #about #content #main-content.white-bkg a:hover, #about #content #main-content.white-bkg a:focus, #domain #content #main-content.white-bkg a:hover, #domain #content #main-content.white-bkg a:focus, #agency #content #main-content.white-bkg a:hover, #agency #content #main-content.white-bkg a:focus, #accessibility #content #main-content.white-bkg a:hover, #accessibility #content #main-content.white-bkg a:focus {
-      color: #FFBE73;
+      color: #0066CC;
       text-decoration: underline; }
 
 .https_chart, .dap_chart {
@@ -568,7 +568,7 @@ a#skipnav {
 #domain #content header h2 {
   margin-top: 10px; }
 #domain #main-content ul {
-  color: #FFBE73;
+  color: #0066CC;
   padding: 10px 0; }
   #domain #main-content ul li {
     margin: 30px 0;
@@ -606,7 +606,7 @@ a#skipnav {
 #agency #content header h2 {
   margin-top: 10px; }
 #agency #main-content ul {
-  color: #FFBE73;
+  color: #0066CC;
   padding: 10px 0; }
   #agency #main-content ul li {
     margin: 30px 0;
@@ -663,7 +663,7 @@ a#skipnav {
           background: #D8D8D8;
           position: relative; }
         #agency #main-content ul li .charts li .fill {
-          background: #FFBE73;
+          background: #0066CC;
           top: 25%;
           right: 0;
           left: 0;
@@ -724,7 +724,7 @@ a#skipnav {
       -moz-appearance: none;
       appearance: none;
       cursor: pointer;
-      background: url("/assets/images/arrow-down.png") 73%/15% no-repeat #F80; }
+      background: url("/assets/images/arrow-down.png") 73%/15% no-repeat #369; }
       .dataTables_wrapper .dataTables_length select::-ms-expand {
         display: none; }
   .dataTables_wrapper .dataTables_csv {
@@ -812,7 +812,7 @@ a#skipnav {
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
-        background-color: #FFBE73;
+        background-color: #0066CC;
         background-repeat: repeat-x;
         background-size: 40px 40px;
         border-radius: 20px 0 0 20px;
@@ -835,12 +835,12 @@ a#skipnav {
     font-size: 0.875em;
     border: none !important; }
     .dataTables_wrapper .dataTables_paginate a.paginate_button.current {
-      background: #F80 !important;
+      background: #369 !important;
       color: white !important; }
       .dataTables_wrapper .dataTables_paginate a.paginate_button.current:hover {
         color: white !important; }
     .dataTables_wrapper .dataTables_paginate a.paginate_button:hover, .dataTables_wrapper .dataTables_paginate a.paginate_button:focus {
-      background: #F80 !important;
+      background: #369 !important;
       color: white !important; }
     .dataTables_wrapper .dataTables_paginate a.paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate a.paginate_button.disabled:focus {
       background: transparent !important; }
