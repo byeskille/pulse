@@ -71,10 +71,10 @@ $(document).ready(function () {
       pageLength: 25,
 
       "oLanguage": {
-        "sSearch": "Suche:",
-        "sLengthMenu": "Zeige _MENU_ Einträge",
-        "sInfo": "Zeige _START_ - _END_ von _TOTAL_ Einträgen",
-        "sInfoFiltered": "(von insgesamt _MAX_ Einträgen)",
+        "sSearch": "Søk:",
+        "sLengthMenu": "Vis _MENU_ oppføringer",
+        "sInfo": "Vis _START_ - _END_ fra _TOTAL_ oppføringer",
+        "sInfoFiltered": "(av totalt _MAX_ oppføringer)",
         "oPaginate": {
           "sPrevious": "<<",
           "sNext": ">>"
