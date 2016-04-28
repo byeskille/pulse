@@ -215,7 +215,7 @@ footer {
   padding: 15px 20px;
   color: white;
   text-align: center;
-  border-top: 1px solid #003366; }
+  border-top: 1px solid #F80; }
 
 .button {
   padding: 10px;
@@ -225,7 +225,7 @@ footer {
   color: white; }
   .button:hover, .button:focus {
     background-color: white;
-    color: #369;
+    color: #4a4a4a;
     text-decoration: none; }
 
 .wrapper {
@@ -294,7 +294,7 @@ a#skipnav {
         float: none;
         display: block; } }
 .site-header > nav {
-  border-bottom: 1px solid #003366; }
+  border-bottom: 1px solid #F80; }
   .site-header > nav #main-nav {
     max-width: 68em;
     margin-left: auto;
