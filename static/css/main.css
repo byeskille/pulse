@@ -333,7 +333,7 @@ a#skipnav {
         .site-header > nav #main-nav ul li a {
           padding: 17px 24px; }
           .site-header > nav #main-nav ul li a:hover {
-            color: #369;
+            color: #F80;
             background-color: white; }
 .site-header #menu-btn {
   display: none; }
@@ -845,12 +845,12 @@ a#skipnav {
     font-size: 0.875em;
     border: none !important; }
     .dataTables_wrapper .dataTables_paginate a.paginate_button.current {
-      background: #369 !important;
+      background: #F80 !important;
       color: white !important; }
       .dataTables_wrapper .dataTables_paginate a.paginate_button.current:hover {
         color: white !important; }
     .dataTables_wrapper .dataTables_paginate a.paginate_button:hover, .dataTables_wrapper .dataTables_paginate a.paginate_button:focus {
-      background: #369 !important;
+      background: #000000 !important;
       color: white !important; }
     .dataTables_wrapper .dataTables_paginate a.paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate a.paginate_button.disabled:focus {
       background: transparent !important; }
