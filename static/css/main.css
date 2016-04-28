@@ -337,7 +337,7 @@ a#skipnav {
         .site-header > nav #main-nav ul li a {
           padding: 17px 24px; }
           .site-header > nav #main-nav ul li a:hover {
-            color: #F80;
+            color: #a4a4a4;
             background-color: white; }
 .site-header #menu-btn {
   display: none; }
