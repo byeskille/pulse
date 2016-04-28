@@ -128,7 +128,7 @@ def load_domain_data():
       agency_name = row[2].strip()
 
       if domain_type != "federal":
-        agency_name = row[3].strip()
+        agency_name = row[2].strip()
 
       agency_slug = slugify.slugify(agency_name)
       branch = "" # empty branch disables analytics
