@@ -259,18 +259,8 @@ a#skipnav {
     -moz-transition: top 0.1s ease-in, background 0.5s linear;
     transition: top 0.1s ease-in, background 0.5s linear; }
 
-.us-official a {
-    display: inline-block;
-    background: url(https://nrkbeta.no/wp-content/themes/nrkbeta_2016/images/nrkbeta-logo.svg);
-    width: 71px;
-    height: 13px;
-    background-size: 100% auto;
-    margin-left: -11px;
-    text-indent: -9999px;
-}
-
 .site-header .disclaimer {
-  background-color: #F80;
+  background-color: #003366;
   padding: 10px 40px;
   color: white;
   text-align: center; }
@@ -535,18 +525,18 @@ a#skipnav {
     padding: 30px 0;
     font-size: 1.5em; }
   #analytics #content #main-content .tab-menu a.tab, #https #content #main-content .tab-menu a.tab, #about #content #main-content .tab-menu a.tab, #domain #content #main-content .tab-menu a.tab, #agency #content #main-content .tab-menu a.tab, #accessibility #content #main-content .tab-menu a.tab {
-    background-color: #111;
+    background-color: #369;
     color: white; }
     #analytics #content #main-content .tab-menu a.tab:hover, #analytics #content #main-content .tab-menu a.tab:focus, #https #content #main-content .tab-menu a.tab:hover, #https #content #main-content .tab-menu a.tab:focus, #about #content #main-content .tab-menu a.tab:hover, #about #content #main-content .tab-menu a.tab:focus, #domain #content #main-content .tab-menu a.tab:hover, #domain #content #main-content .tab-menu a.tab:focus, #agency #content #main-content .tab-menu a.tab:hover, #agency #content #main-content .tab-menu a.tab:focus, #accessibility #content #main-content .tab-menu a.tab:hover, #accessibility #content #main-content .tab-menu a.tab:focus {
-      background-color: #000;
+      background-color: #4080bf;
       color: white; }
 #analytics #content #main-content.white-bkg, #https #content #main-content.white-bkg, #about #content #main-content.white-bkg, #domain #content #main-content.white-bkg, #agency #content #main-content.white-bkg, #accessibility #content #main-content.white-bkg {
   background-color: white; }
   #analytics #content #main-content.white-bkg a, #https #content #main-content.white-bkg a, #about #content #main-content.white-bkg a, #domain #content #main-content.white-bkg a, #agency #content #main-content.white-bkg a, #accessibility #content #main-content.white-bkg a {
-    color: #111;
+    color: #0066CC;
     font-weight: 900; }
     #analytics #content #main-content.white-bkg a:hover, #analytics #content #main-content.white-bkg a:focus, #https #content #main-content.white-bkg a:hover, #https #content #main-content.white-bkg a:focus, #about #content #main-content.white-bkg a:hover, #about #content #main-content.white-bkg a:focus, #domain #content #main-content.white-bkg a:hover, #domain #content #main-content.white-bkg a:focus, #agency #content #main-content.white-bkg a:hover, #agency #content #main-content.white-bkg a:focus, #accessibility #content #main-content.white-bkg a:hover, #accessibility #content #main-content.white-bkg a:focus {
-      color: #111;
+      color: #0066CC;
       text-decoration: underline; }
 
 .https_chart, .dap_chart {
@@ -578,7 +568,7 @@ a#skipnav {
 #domain #content header h2 {
   margin-top: 10px; }
 #domain #main-content ul {
-  color: #333;
+  color: #0066CC;
   padding: 10px 0; }
   #domain #main-content ul li {
     margin: 30px 0;
@@ -616,7 +606,7 @@ a#skipnav {
 #agency #content header h2 {
   margin-top: 10px; }
 #agency #main-content ul {
-  color: #333;
+  color: #0066CC;
   padding: 10px 0; }
   #agency #main-content ul li {
     margin: 30px 0;
@@ -673,7 +663,7 @@ a#skipnav {
           background: #D8D8D8;
           position: relative; }
         #agency #main-content ul li .charts li .fill {
-          background: #333;
+          background: #0066CC;
           top: 25%;
           right: 0;
           left: 0;
@@ -822,7 +812,7 @@ a#skipnav {
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
-        background-color: #333;
+        background-color: #0066CC;
         background-repeat: repeat-x;
         background-size: 40px 40px;
         border-radius: 20px 0 0 20px;
