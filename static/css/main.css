@@ -262,6 +262,8 @@ a#skipnav {
 .us-official a {
     display: inline-block;
     background: url(https://nrkbeta.no/wp-content/themes/nrkbeta_2016/images/nrkbeta-logo.svg);
+    position: relative;
+    top: 3px;
     width: 71px;
     height: 13px;
     background-size: 100% auto;
@@ -279,7 +281,9 @@ a#skipnav {
       padding: 10px 20px;
       font-size: 0.8em; } }
   .site-header .disclaimer .us-official {
-    margin-left: 177px; }
+    margin-left: 177px;
+    top: 0;
+    position: relative; }
     @media screen and (max-width: 1024px) {
       .site-header .disclaimer .us-official {
         margin: 0; } }
