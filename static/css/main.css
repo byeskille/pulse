@@ -724,7 +724,7 @@ a#skipnav {
       cursor: pointer; }
     .dataTables_wrapper .dataTables_length a.active, .dataTables_wrapper .dataTables_length a.active:hover {
       text-decoration: none;
-      color: #F80 !important; }
+      color: black !important; }
     .dataTables_wrapper .dataTables_length select {
       border: none;
       display: inline-block;
