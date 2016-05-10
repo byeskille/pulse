@@ -19,7 +19,7 @@ Det er ikke laget noen fullstendig dokumentasjon for den norske versjonen, men v
 
 ## Kjente bugs:
 
-* På oversikten over domeneeiere under `Lokale og regionale` [https/city/agencies/](https://https-norge.byeskille.no/https/city/agencies/) fungerer det ikke å trykke på tallet for domenene tilknyttet til etaten/virksomheten for å få opp domenene. Søket gjøres da mot `https/domains` og ikke `https/city/domains` slik det skal.
+* På oversikten over domeneeiere under [`Lokale og regionale`](https://https-norge.byeskille.no/https/city/agencies/) fungerer det ikke å trykke på tallet for domenene tilknyttet til etaten/virksomheten for å få opp domenene. Søket gjøres da mot `https/domains` og ikke `https/city/domains` slik det skal.
 
 ---
 
