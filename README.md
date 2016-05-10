@@ -17,6 +17,10 @@ Tusen takk til begge miljøer for kode og spesielt til [robbi5](https://robbi5.d
 
 Det er ikke laget noen fullstendig dokumentasjon for den norske versjonen, men viderebringer info fra den tyske og amerikanske under.
 
+## Kjente bugs:
+
+* På oversikten over domeneeiere under Lokale og regionale [https/city/agencies/](https://https-norge.byeskille.no/https/city/agencies/) fungerer det ikke å trykke på tallet for domenene tilknyttet til etaten/virksomheten for å få opp domenene. Søket gjøres da mot [https/domains] og ikke [https/city/domains] slik det skal.
+
 ---
 
 ## https.jetzt!
