@@ -70,15 +70,18 @@ def register(app):
 
   @app.route("/https/domains/")
   def legacy_https_domains():
-      return redirect(url_for('https_domains', domain_type='federal'))
+      report_name = report_name_for('federal')
+      return render_template("https/domains.html", domain_type='federal', report_name=report_name)
 
   @app.route("/https/agencies/")
   def legacy_https_agencies():
-      return redirect(url_for('https_agencies', domain_type='federal'))
+      report_name = report_name_for('federal')
+      return render_template("https/agencies.html", domain_type='federal', report_name=report_name)
 
   @app.route("/https/info/")
   def legacy_https_guide():
-      return redirect(url_for('https_guide', domain_type='federal'))
+      report_name = report_name_for('federal')
+      return render_template("https/guide.html", domain_type='federal', report_name=report_name)
 
   @app.route("/agency/<slug>")
   def agency(slug=None):
@@ -117,3 +120,4 @@ def register(app):
 
 def report_name_for(domain_type):
     return 'https-' + domain_type
+
