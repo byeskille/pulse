@@ -1,9 +1,10 @@
 ## https-norge
 
 Dette er en norsk versjon av prosjektet [`pulse`](https://github.com/18F/pulse) (The pulse of the federal .gov webspace) for å vise hvordan det står til med HTTPS-bruken på domener eid av offentlige etater og virksomheter i Norge.
-Løsningen for Norge benytter seg av en liste domener samlet inn av NRK. Domenelisten er tilgjengelig som datasettet [norway-gov-domains](https://github.com/byeskille/norway-gov-domains).
+Løsningen for Norge benytter seg av en liste domener samlet inn av NRK. ~~Domenelisten er tilgjengelig som datasettet [norway-gov-domains](https://github.com/byeskille/norway-gov-domains)~~
+Oppdatert: Domenelisten ble tatt ned fra Github sommeren 2016 etter ønske fra Norid som med henvisning til Åndsverksloven mente at listen som baserer seg på data fra blant annet dem ikke kunne ligge ute.
 
-Prosjektet er laget av NRK, og journalist Øyvind Bye Skille, i bakkant av en rekke saker om temaet. 
+Prosjektet er laget av NRK, og journalist Øyvind Bye Skille, i bakkant av en rekke saker om temaet.
 Se blant annet:
 
 * [http://www.nrk.no/dokumentar/xl/1.12854582](http://www.nrk.no/dokumentar/xl/1.12854582)
