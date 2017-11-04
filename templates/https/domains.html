@@ -9,28 +9,33 @@
 {% include 'includes/https/header.html' %}
 
 <section id="main-content" class="white-bkg">
-  <nav class="tab-menu">
-    <span class="tab">Oversikt domener</span>
-    <a href="{{ url_for('https_agencies', domain_type=domain_type) }}" class="tab">Oversikt {{ domain_type | domain_type_label }}</a>
-    <a href="{{ url_for('https_guide', domain_type=domain_type) }}" class="tab">Info</a>
+
+  <nav class="tab-menu" role="tablist">
+    <span class="tab" role="tab" aria-controls="tab-panel" aria-selected="true">Oversikt domener</span>
+    <a href="{{ url_for('https_agencies', domain_type=domain_type) }}" class="tab" role="tab" aria-controls="tab-panel" aria-selected="false">Oversikt {{ domain_type | domain_type_label }}</a>
+    <a href="{{ url_for('https_guide', domain_type=domain_type) }}" class="tab" role="tab" aria-controls="tab-panel" aria-selected="false">Info</a>
   </nav>
-  <div class="wrapper">
+
+  <div id="tab-panel" class="wrapper" role="tabpanel" aria-hidden="false">
     <table class="domain responsive https">
-        <thead>
+      <caption>Secure HTTP(S) By Domain. Table is sortable via first row table headers. Each row contains a domain and related attributes.</caption>
+      <thead>
           <tr>
             <th class="all">Domene</th>
-            <th class="never">Canonical/hovedadresse</th>
-            <th class="none">{{ domain_type | domain_type_label }}</th>
+            <th class="never">Canonical</th>
+            <th class="none">{{ domain_type | domain_type_label }}:</th>
             <th class="min-tablet">Bruker HTTPS</th>
             <th class="min-tablet">Alt på HTTPS</th>
             <th class="min-tablet-l">Strict Transport Security (HSTS)</th>
+            <th class="min-tablet-l">Preloaded (empfohlen)</th>
             <!--<th class="none">SSL Labs Grade</th>-->
-            <th class="none" scope="col">Detaljer</th>
-            <!--<th class="none">TLS Issues</th>-->
+            <th class="none" scope="col"></th>
+            <th class="none" scope="col"></th>
           </tr>
         </thead>
     </table>
   </div>
+
 </section>
 
 <script src="{{ url_for('static', filename='js/https/domains.js') }}?{{ now() | date("%Y%m%j%H%M%S") }}"

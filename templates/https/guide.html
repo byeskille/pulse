@@ -10,13 +10,13 @@
 
 <section id="main-content" class="white-bkg">
 
-  <nav class="tab-menu">
-    <a href="{{ url_for('https_domains', domain_type=domain_type) }}" class="tab">Oversikt domener</a>
-    <a href="{{ url_for('https_agencies', domain_type=domain_type) }}" class="tab">Oversikt {{ domain_type | domain_type_label }}</a>
-    <span class="tab">Info</span>
+  <nav class="tab-menu" role="tablist">
+    <a href="{{ url_for('https_domains', domain_type=domain_type) }}" class="tab" role="tab" aria-controls="tab-panel" aria-selected="false">Oversikt domener</a>
+    <a href="{{ url_for('https_agencies', domain_type=domain_type) }}" class="tab" role="tab" aria-controls="tab-panel" aria-selected="false">Oversikt {{ domain_type | domain_type_label }}</a>
+    <span class="tab" role="tab" aria-controls="tab-panel" aria-selected="true">Info</span>
   </nav>
 
-  <div class="wrapper">
+  <div id="tab-panel" class="wrapper" role="tabpanel" aria-hidden="false">
 
     <div class="guide">
 
@@ -27,8 +27,8 @@
         <h3>Hvilke domener sjekkes?</h3>
 
         <p>
-          Domenene som sjekkes kan knyttes til offentlige etater og virksomheter i Norge både i statlig, kommunal og fylkeskommunal sektor. Domenene tilhører alt fra store statlige organer som departementene til små lokale menigheter. Mer info om hvordan NRK lagde domenelisten kan leses på <a href"https://nrkbeta.no/2016/03/30/slik-undersokte-nrk-offentlige-nettsteder/" title="NRKbeta – Slik undersøkte NRK offentlige nettsteder">NRKbeta</a>. <br/>
-					NRK har etter publisering av nyhetssaker om temaet valgt å gjøre hele domenelisten tilgjengelig som datasettet <a href="https://github.com/byeskille/norway-gov-domains">norway-gov-domains</a>. Dette datasettet er igjen grunnlag for testene denne oversikten er basert på.        </p>
+          Domenene som sjekkes kan knyttes til offentlige etater og virksomheter i Norge både i statlig, kommunal og fylkeskommunal sektor. Domenene tilhører alt fra store statlige organer som departementene til små lokale menigheter. Mer info om hvordan NRK lagde domenelisten kan leses på <a href"https://nrkbeta.no/2016/03/30/slik-undersokte-nrk-offentlige-nettsteder/" title="NRKbeta – Slik undersøkte NRK offentlige nettsteder">NRKbeta</a>.
+					</p>
 
         <p>
           Fra oversikten sjekkes fire ulike "Endepunkter" for hvert domene: <code>http://</code>, <code>http://www.</code>, <code>https://</code> og <code>https://www.</code>
@@ -39,7 +39,7 @@
         </p>
 
         <p>
-         Testen er gjort mulig ved hjelp <a href="https://github.com/benbalter/site-inspector">Open Source</a> <a href="https://github.com/18F/domain-scan">verktøy</a>.
+         Testen er gjort mulig ved hjelp <a href="https://github.com/dhs-ncats/pshtt">Open Source</a> <a href="https://github.com/18F/domain-scan">verktøy</a>.
         </p>
 
       </article>
@@ -62,13 +62,18 @@
           <li>Om et nettsted virker å bruke HTTPS som standard for all trafikk. Dette kan være tilfelle om trafikk på usikker HTTP omdirigieres til HTTPS, eller om nettstedet bare er tilgjengelig på HTTPS.</li>
         </ul>
 
-        <ul>
+        <ul id="uses-hsts">
           <li><strong>Strict Transport Security (HSTS)</strong></li>
-          <li><strong>Mulige svar:</strong> Nei, Ja, "Ja, preload-klar", "Ja, preloaded"</li>
-          <li>Om et domene har implementert <a href="https://https.cio.gov/hsts/">HTTP Strict Transport Security</a>. Det betyr, at <a href="http://caniuse.com/#search=hsts">nettlesere som støtter teknologien</a> bare vil kommunisere med nettstedet over HTTPS, selv om man klikker på ei lenke som begynner med HTTP.</li>
+          <li><strong>Mulige svar:</strong> Nei, Ja</li>
+          <li>Om et domene har implementert <a href="https://https.cio.gov/hsts/">HTTP Strict Transport Security</a> implementiert. Det betyr, at <a href="http://caniuse.com/#search=hsts">nettlesere som støtter teknologien</a> bare vil kommunisere med nettstedet over HTTPS, selv om man klikker på ei lenke som begynner med HTTP.</li>
           <li>"Ja" betyr, at <code>Strict-Transport-Security</code>er satt i HTTP-sikkerhetshode for nettstedet.</li>
-          <li>"Ja, preload-klar" betyr, at dette domenet har HSTS i HTTP-sikkerhetshode, som gjelder for alle subdomener og for er markert for <a href="https://hstspreload.appspot.com">preloading</a>.</li>
-          <li>"Ja, preloaded" betyr, at dette domenet er "preload-klar" (se over) <strong>og</strong> domenet er oppført i <a href="https://chromium.googlesource.com/chromium/src/+/master/net/http/transport_security_state_static.json">Chrome preload-listen</a>.
+        </ul>
+
+        <ul>
+          <li><strong>Preloaded (anbefalt)</strong></li>
+          <li><strong>Mulige svar:</strong> Nei, Klargjort, Ja</li>
+          <li><em>Klargjort</em> betyr, at dette domenet har HSTS i HTTP-sikkerhetshode, som gjelder for alle subdomener og for er markert for <a href="https://hstspreload.appspot.com">preloading</a>.</li>
+          <li><em>Ja</em> betyr, at dette domenet er klargjort (se over) <strong>og</strong> at det finnes en oppføring i <a href="https://chromium.googlesource.com/chromium/src/+/master/net/http/transport_security_state_static.json">Chrome preload-listen</a>.
           </li>
         </ul>
 

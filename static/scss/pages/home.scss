@@ -1,0 +1,57 @@
+// Landing Page
+/////////////////////////////////////////
+
+#home {
+  .hero {
+    color: white;
+    padding-top: 40px;
+    text-align: center;
+
+    @include span-columns(12);
+
+    h2 {
+      font-size: $base-font-size * 7;
+      font-weight: 300;
+    }
+
+    h3 {
+      font-size: $base-font-size * 2;
+      font-weight: 100;
+      padding-top: 15px;
+    }
+  }
+
+  #results {
+    padding: 40px 0;
+
+    @include span-columns(12);
+
+    .https, .dap {
+      margin-bottom: 40px;
+      text-align: center;
+
+      @include span-columns(6 of 12);
+
+      @media (max-width: 620px) {
+        width: 100%
+      }
+
+      @include display(flex);
+      @include flex-direction(column);
+      @include align-items(center);
+      @include justify-content(center);
+
+      .total-value {
+        font-size: 5em;
+      }
+    }
+
+    h4 {
+      color: white;
+      font-size: $base-font-size * 2;
+      font-weight: 100;
+      padding-top: 15px;
+      text-align: center;
+    }
+  }
+}

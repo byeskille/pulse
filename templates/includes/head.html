@@ -11,6 +11,14 @@
 
 <meta name="root_url" content="{{ url_for('index') }}">
 
+<!-- Twitter Specific Metas
+================================================== -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:site" content="@httpsjetzt" />
+<meta name="twitter:creator" content="@httpsjetzt" />
+<meta name="twitter:image" content="{{ site.url }}/static/images/logo-httpsjetzt.png" />
+<meta name="twitter:image:alt" content="https.jetzt!" />
+
 <!-- Favicons
 ================================================== -->
 <!-- 128x128 -->
@@ -35,18 +43,26 @@ https://developers.google.com/web/updates/2014/11/Support-for-theme-color-in-Chr
 ================================================== -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.min.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/google-fonts.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='js/vendor/DataTables-1.10.6/media/css/jquery.dataTables.min.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='js/vendor/DataTables-1.10.6/media/css/dataTables.responsive.css') }}">
+
 <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?{{ now() | date("%Y%m%j%H%M%S") }}">
 
 <!-- Scripts
 ================================================== -->
 <script src="{{ url_for('static', filename='js/vendor/modernizr-2.8.3.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/vendor/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/vendor/DataTables-1.10.6/media/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/vendor/DataTables-1.10.6/media/js/dataTables.responsive.js') }}"></script>
-<script src="{{ url_for('static', filename='js/vendor/dataTables.lengthLinks.js') }}"></script>
-<script src="{{ url_for('static', filename='js/dataTables.downloads.js') }}"></script>
+
 <script src="{{ url_for('static', filename='js/vendor/d3.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/vendor/querystring.js') }}"></script>
 <script src="{{ url_for('static', filename='js/utils.js') }}?{{ now() | date("%Y%m%j%H%M%S") }}"></script>
+
+
+<!-- sigh, datatables -->
+
+<link rel="stylesheet" href="{{ url_for('static', filename='DataTables-1.10.12/css/jquery.dataTables.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='Responsive-2.1.0/css/responsive.dataTables.min.css') }}">
+
+<script src="{{ url_for('static', filename='DataTables-1.10.12/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='Responsive-2.1.0/js/dataTables.responsive.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/dataTables.lengthLinks.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dataTables.downloads.js') }}"></script>

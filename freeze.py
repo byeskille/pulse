@@ -27,7 +27,7 @@ def report_files():
     yield 'agency_report', { 'report_name': report_name }
     yield 'domain_report', { 'report_name': report_name, 'ext': 'json' }
     yield 'domain_report', { 'report_name': report_name, 'ext': 'csv' }
-    yield 'report_feed', { 'report_name': report_name, 'ext': 'xml' }
+  yield 'report_feed', {}
 
 
 if __name__ == '__main__':

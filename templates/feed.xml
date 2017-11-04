@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>{{ site.name }} | {{ site.title }}</title>
+    <title>{{ site.name }}</title>
     <link>{{ site.url }}</link>
     <description>{{ site.description }}</description>
     <language>en-us</language>
     <atom:link href="{{ site.url }}/data/reports/feed/" rel="self" type="application/rss+xml" />
 
     <item>
-      <title>Report: {{ scan_date | date("%B %d, %Y") }}</title>
+      <title>{{ scan_date | date("%d. %B %Y") }}: {{ report_federal.uses | percent(report_federal.eligible) }}% Behörden ({{ report_federal.uses }} / {{ report_federal.eligible }}), {{ report_city.uses | percent(report_city.eligible) }}% Kommunen ({{ report_city.uses }} / {{ report_city.eligible }})</title>
       <description><![CDATA[
-        Data updated for {{ scan_date | date("%B %d, %Y")}}
+        Data updated at {{ scan_date | date("%B %d, %Y")}}.<br/>
+        Behörden: {{ report_federal.uses }} von {{ report_federal.eligible }}. {{ report_federal.uses | percent(report_federal.eligible) }}%<br/>
+        Kommunen: {{ report_city.uses }} von {{ report_city.eligible }}. {{ report_city.uses | percent(report_city.eligible) }}%
       ]]></description>
 
       <link>{{ site.url }}/#{{ scan_date | date("%Y-%m-%d") }}</link>

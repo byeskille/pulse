@@ -1,4 +1,3 @@
-
 var Utils = {
   // ignores the 'type' and 'row' args if sent as datatables callback
 
@@ -34,11 +33,11 @@ var Utils = {
         return data;
       else
         return "" +
-          "<a href=\"" + Utils.rootUrl() + page + "/domains/#" +
+          "<a href=\"../domains/#" +
             QueryString.stringify({q: row["name"]}) + "\">" +
             data +
           "</a>";
-    }
+    };
   },
 
   searchLinks: function() {
@@ -51,7 +50,77 @@ var Utils = {
     }
   },
 
+  a11yErrorList: function(data, type, row) {
+    var errorListOutput = "";
+
+    $.each(data, function(key, value) {
+      if (value) {
+        errorListOutput += "<li><a href=\"/a11y/domain/" + row['domain'].replace(/http:\/\//i, '') + "#" + key.replace(/\s/g, '').replace(/\//i, '') + "\" target=\"_blank\">" + key + ": " + value + "</a></li>";
+      }
+    });
+
+    if (!errorListOutput) {
+      return "</hr><span class=\"noErrors\">No errors found.</span>";
+    } else {
+      return "</hr><ul class=\"errorList\">" + errorListOutput + "</ul></hr>";
+    }
+  },
+
+  custSatList: function(data, type, row) {
+    var custSatListOutput = "";
+
+    $.each(data, function(key, value) {
+      if (value) {
+        custSatListOutput += "<li><a href=\"" + value + "\">" + key + "</a></li>";
+      }
+    });
+
+    if (!custSatListOutput) {
+      return "</hr><span class=\"noErrors\">No customer satisfaction tools used.</span>";
+    } else {
+      return "</hr><ul class=\"errorList\">" + custSatListOutput + "</ul></hr>";
+    }
+  },
+
+  detailsKeyboardCtrl: function(){
+    $('table tbody tr th:first-child').each(function(){
+      var content = $(this).parent().find("a").html();
+      $(this).attr('tabindex','0')
+        .attr('aria-label','Select to show additional details about ' + content)
+        .attr('aria-expanded', 'false')
+        .on('keydown, click',function(e){
+          if (e.keyCode == 13 || e.type == "click") {
+            var expanded = $(this).attr('aria-expanded') != "true",
+              toggleText = expanded ? "hide" : "show";
+
+            $(this).attr('aria-expanded', expanded);
+            $(this).attr('aria-label','Select to ' + toggleText + ' additional details about ' + content);
+            var self = this;
+            if (!e.originalEvent){
+              setTimeout(function(){
+                $(self).closest('tr')
+                  .next('tr.child')
+                  .attr('tabindex', '-1')
+                  .focus();
+              }, 100)
+            }
+
+          }
+        })
+    });
+  },
+
+  updatePagination: function(){
+    $('div.dataTables_paginate a:first').attr('aria-label','Previous Page');
+    $('div.dataTables_paginate a:last').attr('aria-label','Next Page');
+    $('div.dataTables_paginate span a').each(function(){
+      var pageNum = $(this).html();
+      $(this).attr('aria-label', 'Page ' + pageNum);
+    });
+  },
+
   rootUrl: function() {
     return $("meta[name=root_url]").attr("content") || "/";
   }
+
 };

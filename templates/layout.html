@@ -1,17 +1,23 @@
 <!doctype html>
 <html lang="de">
 <head>
+<!-- Title and meta description
+================================================== -->
 <title>{% block title %}{% endblock %} - {{ site.title }}</title>
 <meta property="og:title" content="{{ self.title() }} - {{ site.title }}" />
+<meta name="twitter:title" content="{{ self.title() }}" />
 
 <meta name="description" content="{% block description %}{% endblock %}">
 <meta property="og:description" content="{{ self.description() }}" />
+<meta name="twitter:description" content="{{ self.description() }}" />
+
+<link rel="canonical" href="{{ site.url }}{{ request.path }}" />
 
 {% include 'includes/head.html' %}
 </head>
 
 <body id="{% block page_id %}{% endblock %}">
-<a id="skipnav" href="#content">Til innhold</a>
+<a id="skipnav" href="#skip-target" onclick="document.getElementById('skip-target').focus()">Til innhold</a>
 <!--[if lte IE 9]>
   <section>
     <h2>Your browser is out of date.</h2>
@@ -28,7 +34,8 @@
 
 {% include 'includes/header.html' %}
 
-<section id="content">
+<section id="content" role="main">
+  <a name="skip-target" id="skip-target" tabindex='-1' href='#' class="sr-only">Start of Main Content</a>
   {%block content %}{% endblock %}
 </section>
 

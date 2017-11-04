@@ -1,46 +1,38 @@
 $(document).ready(function () {
 
-  $.get("/data/agencies/https.json", function(data) {
+  $.get("/static/data/tables/accessibility/agencies.json", function(data) {
     renderTable(data.data);
   });
 
-  var percentBar = function(field) {
-    return function(data, type, row) {
-      if (type == "sort")
-        return null;
-      return Utils.progressBar(Utils.percent(
-        row.https[field], row.https.eligible
-      ));
-    };
-  }
-
   var renderTable = function(data) {
-    $("table").DataTable({
+    var table = $("table").DataTable({
       responsive: true,
       initComplete: Utils.searchLinks,
 
       data: data,
 
       columns: [
-        {data: "name"},
         {
-          data: "https.eligible",
-          render: Utils.filterAgency("accessibility")
+          data: "agency",
+          cellType: "th"
         },
-        {data: "https.uses"},
-        {data: "https.enforces"},
-        {data: "https.hsts"},
-        {data: "https.grade"},
-        {data: "https.uses"}
+        {
+          data: "Color Contrast - Initial Findings"
+        },
+        {
+          data: "HTML Attribute - Initial Findings"
+        },
+        {
+          data: "Missing Image Descriptions"
+        }
       ],
 
-      // order by number of domains
       order: [[1, "desc"]],
 
       columnDefs: [
         {
           targets: 0,
-          cellType: "td",
+          cellType: "th",
           createdCell: function (td) {
             td.scope = "row";
           }
@@ -61,6 +53,11 @@ $(document).ready(function () {
       dom: 'Lftrip'
 
     });
-  };
 
+    Utils.updatePagination();
+    table.on("draw.dt",function(){
+      Utils.updatePagination();
+    });
+  };
+  
 });

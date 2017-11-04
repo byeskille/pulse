@@ -9,6 +9,19 @@ staging:
 production:
 	cd deploy/ && fab deploy --set environment=production && cd ..
 
+# standalone push, don't download data (assume it's present)
+# suitable for automatic deploy from an unattended server
+# uses credentials from the "scan-box-deployer" service
+cg_production_autodeploy:
+	cf login -a $$CF_API -u $$CF_USERNAME -p $$CF_PASSWORD -o gsa-ogp-pulse -s pulse && cf push pulse
+
+# download data externally and then deploy to production
+cg_production:
+	make data_init && cf target -o gsa-ogp-pulse -s pulse && cf push pulse
+
+cg_staging:
+	make data_init && cf target -o gsa-ogp-pulse -s pulse && cf push pulse-staging
+
 debug:
 	DEBUG=true python pulse.py
 
@@ -40,13 +53,18 @@ update_development:
 	python -m data.update --scan=skip
 
 # downloads latest snapshot of data locally
+# Pending cloud.gov production bucket:
+# cg-4adefb86-dadb-4ecf-be3e-f1c7b4f6d084
+# Pending cloud.gov backup bucket:
+# cg-72ce4caf-d81b-4771-9b96-3624b5554587
 data_init:
 	mkdir -p data/output/scan/results/
-	curl https://s3.amazonaws.com/pulse.cio.gov/live/scan/analytics.csv > data/output/scan/results/analytics.csv
-	curl https://s3.amazonaws.com/pulse.cio.gov/live/scan/inspect.csv > data/output/scan/results/inspect.csv
-	curl https://s3.amazonaws.com/pulse.cio.gov/live/scan/tls.csv > data/output/scan/results/tls.csv
-	curl https://s3.amazonaws.com/pulse.cio.gov/live/scan/meta.json > data/output/scan/results/meta.json
-	curl https://s3.amazonaws.com/pulse.cio.gov/live/db/db.json > data/db.json
+	curl https://s3-us-gov-west-1.amazonaws.com/cg-4adefb86-dadb-4ecf-be3e-f1c7b4f6d084/live/scan/analytics.csv > data/output/scan/results/analytics.csv
+	curl https://s3-us-gov-west-1.amazonaws.com/cg-4adefb86-dadb-4ecf-be3e-f1c7b4f6d084/live/scan/pshtt.csv > data/output/scan/results/pshtt.csv
+	curl https://s3-us-gov-west-1.amazonaws.com/cg-4adefb86-dadb-4ecf-be3e-f1c7b4f6d084/live/scan/tls.csv > data/output/scan/results/tls.csv
+	curl https://s3-us-gov-west-1.amazonaws.com/cg-4adefb86-dadb-4ecf-be3e-f1c7b4f6d084/live/scan/sslyze.csv > data/output/scan/results/sslyze.csv
+	curl https://s3-us-gov-west-1.amazonaws.com/cg-4adefb86-dadb-4ecf-be3e-f1c7b4f6d084/live/scan/meta.json > data/output/scan/results/meta.json
+	curl https://s3-us-gov-west-1.amazonaws.com/cg-4adefb86-dadb-4ecf-be3e-f1c7b4f6d084/live/db/db.json > data/db.json
 
 #
 # https.jetzt additions:
@@ -66,6 +84,6 @@ publish: deploy.sh
 update_httpsjetzt:
 	pip3 install --user -r requirements.txt
 	docker pull 18fgsa/domain-scan
-	echo '#!/bin/bash'"\n"'/usr/bin/docker run --rm -v $$(pwd)/data/output/scan:$$(pwd)/data/output/scan 18fgsa/domain-scan $$@' > docker-scan
+	printf '#!/bin/bash'"\n"'docker run --rm -v $$(pwd)/data/output/scan:$$(pwd)/data/output/scan 18fgsa/domain-scan $$@' > docker-scan
 	chmod +x docker-scan
-	DOMAIN_SCAN_PATH="./docker-scan" SCANNERS=inspect,sslyze,tls python3 -m data.update --scan=here
+	DOMAIN_SCAN_PATH="./docker-scan" SCANNERS=pshtt,sslyze python3 -m data.update --scan=here

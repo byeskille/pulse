@@ -2,9 +2,14 @@
 from flask import render_template, Response, redirect, url_for
 from app import models
 from app.data import FIELD_MAPPING
+import os
 import ujson
 
 def register(app):
+
+  @app.route("/data/")
+  def data():
+      return render_template("data.html")
 
   @app.route("/")
   def index():
@@ -32,6 +37,7 @@ def register(app):
         domains = models.Domain.eligible_for_type(domain_type, report_name)
       else:
         domains = models.Domain.eligible(report_name)
+        domains = sorted(domains, key=lambda k: k['domain'])
 
       if ext == "json":
         response = Response(ujson.dumps({'data': domains}))
@@ -48,7 +54,6 @@ def register(app):
         domains = models.Agency.eligible_for_type(domain_type, report_name)
       else:
         domains = models.Agency.eligible(report_name)
-
       response = Response(ujson.dumps({'data': domains}))
       response.headers['Content-Type'] = 'application/json'
       return response
@@ -102,21 +107,16 @@ def register(app):
   # Sanity-check RSS feed, shows the latest report.
   @app.route("/data/reports/feed/")
   def report_feed():
-      response = Response(render_template("feed.xml"))
-      response.headers['Content-Type'] = 'application/rss+xml'
-      return response
+        report_federal = models.Report.latest().get('https-federal', {})
+        report_city = models.Report.latest().get('https-city', {})
+        response = Response(render_template("feed.xml", report_federal=report_federal, report_city=report_city))
+        response.headers['Content-Type'] = 'application/rss+xml'
+        return response
 
-  #@app.route("/accessibility/domains/")
-  #def accessibility_domains():
-  #  return render_template("accessibility/domains.html")
 
-  #@app.route("/accessibility/agencies/")
-  #def accessibility_agencies():
-  #  return render_template("accessibility/agencies.html")
-
-  #@app.route("/accessibility/guidance/")
-  #def accessibility_guide():
-  #  return render_template("accessibility/guide.html")
+  @app.errorhandler(404)
+  def page_not_found(e):
+      return render_template('404.html'), 404
 
 def report_name_for(domain_type):
     return 'https-' + domain_type

@@ -3,7 +3,7 @@ import os
 import io
 import datetime
 import csv
-from app.data import CSV_FIELDS, FIELD_MAPPING, LABELS
+from app.data import CSV_FIELDS, CSV_FIELDS_SUBDOMAINS, FIELD_MAPPING, LABELS
 
 this_dir = os.path.dirname(__file__)
 db = TinyDB(os.path.join(this_dir, '../data/db.json'))
@@ -16,13 +16,14 @@ db = TinyDB(os.path.join(this_dir, '../data/db.json'))
 def clear_database():
   db.purge_tables()
 
-
 class Report:
   # report_date (string, YYYY-MM-DD)
   # https.eligible (number)
   # https.uses (number)
   # https.enforces (number)
   # https.hsts (number)
+  # https.subdomains_eligible
+  # https.subdomains_uses
 
   # Initialize a report with a given date.
   def create(report_date):
@@ -39,7 +40,7 @@ class Report:
     else:
       return None
 
-  # Update latest report's 'https' value
+  # Update latest report's 'https' or 'analytics' value
   # with the values
   def update(data):
 
@@ -54,13 +55,22 @@ class Domain:
   # agency_slug (string)
   # agency_name (string)
   # branch (string, legislative/judicial/executive)
+  # state (string)
   #
   # live? (boolean)
   # redirect? (boolean)
   # canonical (string, URL)
   #
   # https: {
-  #   [many things]
+  #   [many things],
+  #   subdomains: {
+  #     [censys, url, etc.] {
+  #       eligible,
+  #       uses,
+  #       enforces,
+  #       hsts
+  #     }
+  #   }
   # }
   #
 
@@ -143,6 +153,34 @@ class Domain:
 
     return output.getvalue()
 
+  # Given an array of straight subdomain results,
+  def subdomains_to_csv(subdomains):
+    output = io.StringIO()
+    writer = csv.writer(output, quoting=csv.QUOTE_NONNUMERIC)
+
+    report_type = "https"
+
+    # initialize with a header row
+    header = []
+    for field in CSV_FIELDS_SUBDOMAINS['common']:
+      header.append(LABELS[field])
+    for field in CSV_FIELDS_SUBDOMAINS[report_type]:
+      header.append(LABELS[report_type][field])
+    writer.writerow(header)
+
+    for domain in subdomains:
+      row = []
+      for field in CSV_FIELDS_SUBDOMAINS['common']:
+        if FIELD_MAPPING.get(field):
+          row.append(FIELD_MAPPING[field][domain[field]])
+        else:
+          row.append(domain[field])
+      for field in CSV_FIELDS_SUBDOMAINS[report_type]:
+        row.append(FIELD_MAPPING[report_type][field][domain[report_type][field]])
+      writer.writerow(row)
+
+    return output.getvalue()
+
 
 
 class Agency:
@@ -158,6 +196,12 @@ class Agency:
   #   enforces (number)
   #   hsts (number)
   #   grade (number, >= A-)
+  #   subdomains {
+  #     eligible (number)
+  #     uses (number)
+  #     enforces (number)
+  #     hsts (number)
+  #   }
   # }
   #
 

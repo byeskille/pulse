@@ -1,4 +1,6 @@
 /data/output
+/data/*.json
+/data/*.env
 db.json
 domains.csv
 .env
@@ -31,3 +33,5 @@ build/
 !build/.keep
 
 deploy.sh
+docker-scan
+main.css.map
