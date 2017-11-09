@@ -86,4 +86,4 @@ update_httpsjetzt:
 	docker pull 18fgsa/domain-scan
 	printf '#!/bin/bash'"\n"'docker run --rm -v $$(pwd)/data/output/scan:$$(pwd)/data/output/scan 18fgsa/domain-scan $$@' > docker-scan
 	chmod +x docker-scan
-	DOMAIN_SCAN_PATH="./docker-scan" SCANNERS=pshtt,sslyze python3 -m data.update --scan=here
+	DOMAIN_SCAN_PATH="./docker-scan" SCANNERS=pshtt python3 -m data.update --scan=here
