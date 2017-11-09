@@ -210,7 +210,7 @@ $(document).ready(function () {
     else if (
         (https >= 1) && (behavior >= 2) &&
         (hsts == 2) && (preloaded == 2)) {
-      details = g("Fast perfekt!") + " " + tlsDetails;
+      details = g("Nesten perfekt!") + " " + tlsDetails;
     }
 
     // CASE: HSTS preloaded, but HSTS header is missing.
