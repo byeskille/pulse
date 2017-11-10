@@ -70,17 +70,17 @@ $(document).ready(function () {
 
     // If the domain is preloaded, responsibilities are absolved.
     if (row.https.preloaded == 2)
-      return "All subdomains automatically protected through preloading.";
+      return "Alle subdomener blir automatisk beskyttet ved hjelp av hardkoding (preloading).";
 
     if (row.https.preloaded == 1)
-      return "All subdomains will be protected when preloading is complete.";
+      return "Alle subdomener vil bli automatisk beskyttet når hardkodingen er ferdig (preloading).";
 
     if (!row.https.subdomains) {
       return "";
       if (row.https.uses >= 1)
-        return "No public subdomains found. " + l("preload", "Consider preloading.");
+        return "Ingen kjente subdomener funnet. " + l("preload", "vurder hardkoding (preloading).");
       else
-        return "No public subdomains found.";
+        return "Ingen kjente subdomener funnet.";
     }
 
     var sources = [],
@@ -91,9 +91,9 @@ $(document).ready(function () {
     if (row.https.subdomains.censys) {
       pct = Utils.percent(row.https.subdomains.censys.enforces, row.https.subdomains.censys.eligible);
       message = n("" + pct + "%") + " of " +
-        row.https.subdomains.censys.eligible + " public sites "
-        + l(censysUrlFor(row.domain), "known to Censys") +
-        " enforce HTTPS.";
+        row.https.subdomains.censys.eligible + " offentlige domener "
+        + l(censysUrlFor(row.domain), "kjent for Censys") +
+        " alt på HTTPS.";
       sources.push(message);
     }
 
