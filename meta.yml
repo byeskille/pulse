@@ -3,14 +3,14 @@
 # Canonical URL
 url: https://nrkbeta.no/https-norge
 
-name: "HTTPS-status Norge"
-title: "HTTPS-status Norge"
-description: "Hvor stor andel av domener eid av det offentlige i Norge bruker HTTPS?"
+name: "HTTPS-status Kommune-Norge"
+title: "HTTPS-status Kommune-Norge"
+description: "Hvor stor andel av offisielle .kommune.no-domener bruker HTTPS?"
 
 # Data sources. These URLs should have their content updated in-place.
 data:
   # URL where we download the .gov domain list from.
-  domains_url: "https://byeskille.no/norway-gov-domains/data/domains.csv"
+  domains_url: "https://byeskille.no/norway-gov-domains/data/domains.local.kommune.csv"
 
   # URL where we download the participating DAP .gov list from.
   analytics_url: ""
