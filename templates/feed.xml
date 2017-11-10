@@ -4,15 +4,15 @@
     <title>{{ site.name }}</title>
     <link>{{ site.url }}</link>
     <description>{{ site.description }}</description>
-    <language>en-us</language>
+    <language>nb-no</language>
     <atom:link href="{{ site.url }}/data/reports/feed/" rel="self" type="application/rss+xml" />
 
     <item>
-      <title>{{ scan_date | date("%d. %B %Y") }}: {{ report_federal.uses | percent(report_federal.eligible) }}% Behörden ({{ report_federal.uses }} / {{ report_federal.eligible }}), {{ report_city.uses | percent(report_city.eligible) }}% Kommunen ({{ report_city.uses }} / {{ report_city.eligible }})</title>
+      <title>{{ scan_date | date("%d. %B %Y") }}: {{ report_federal.uses | percent(report_federal.eligible) }}% Statlige ({{ report_federal.uses }} / {{ report_federal.eligible }}), {{ report_city.uses | percent(report_city.eligible) }}% Lokale og regionale ({{ report_city.uses }} / {{ report_city.eligible }})</title>
       <description><![CDATA[
-        Data updated at {{ scan_date | date("%B %d, %Y")}}.<br/>
-        Behörden: {{ report_federal.uses }} von {{ report_federal.eligible }}. {{ report_federal.uses | percent(report_federal.eligible) }}%<br/>
-        Kommunen: {{ report_city.uses }} von {{ report_city.eligible }}. {{ report_city.uses | percent(report_city.eligible) }}%
+        Data sist oppdatert {{ scan_date | date("%B %d, %Y")}}.<br/>
+        Statlige: {{ report_federal.uses }} av {{ report_federal.eligible }}. {{ report_federal.uses | percent(report_federal.eligible) }}%<br/>
+        Lokale og regionale: {{ report_city.uses }} av {{ report_city.eligible }}. {{ report_city.uses | percent(report_city.eligible) }}%
       ]]></description>
 
       <link>{{ site.url }}/#{{ scan_date | date("%Y-%m-%d") }}</link>
