@@ -221,7 +221,7 @@ def load_domain_data():
       state = ''
 
       if domain_type != "federal":
-        agency_name = row[3].strip() # City
+        agency_name = row[2].strip() # City
         state = row[4].strip()
 
       agency_slug = slugify.slugify(agency_name)
