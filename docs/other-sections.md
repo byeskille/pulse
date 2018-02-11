@@ -9,6 +9,7 @@ This project is an initial pass - there is much more information that can be rep
   * Page Status (e.g. 200, 404, etc) of all of the required urls in the [OMB website memo](https://www.whitehouse.gov/sites/default/files/omb/memoranda/2017/m-17-06.pdf).  
     * Potentially including subcomponents such as robots.txt
   * Number or list of subdomains from a domain reporting into DAP
+  * More ideas from [this report](https://itif.org/publications/2017/11/27/benchmarking-us-government-websites?mc_cid=11d85030ec&mc_eid=5f89fe1949)
   * Test the deeper config options that the DAP snippet should be employing, such as IP anonymization, Event tracking, Demographics turned off, and ?????.  (Possibly using headless browser)
 * Does the site require “www”? Does it require not using “www”?
 * Load time (server-side)
@@ -33,3 +34,5 @@ This project is an initial pass - there is much more information that can be rep
 * https://monitor.dnsops.gov/
 * What else can we get from Verisign?
 * Ideas from the [GDS effort](https://www.ncsc.gov.uk/blog-post/web-check-helping-you-secure-your-public-sector-websites).
+* [Several good ideas here](https://github.com/18F/pulse/issues/733#issue-262290981).  
+* [plain language/readability](https://github.com/18F/pulse/issues/594#issuecomment-262977287)

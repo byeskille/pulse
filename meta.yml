@@ -18,4 +18,21 @@ data:
   # DAP URL where we source public .gov subdomains from.
   analytics_subdomains_url: ""
 
+  # Preprocessed CSV where we source End of Term Archive data from.
+  eot_subdomains_url: ""
+
+  # Snapshot of Censys.io data from late November 2017, interim while we
+  # re-establish use of their APIs.
+  censys_snapshot_url: ""
+
+  # Snapshot of Rapid7 Reverse DNS data from Scans.io in late 2017. The data
+  # is too big to automatically process each time with our current infrastructure,
+  # so this is relying on occasional snapshots which can be updated in-place in the repo.
+  rdns_snapshot_url: ""
+
+a11y:
+  config: ""
+  redirects: ""
+
 bucket: unused
+aws_region: us-gov-west-1

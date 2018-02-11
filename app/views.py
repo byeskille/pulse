@@ -25,35 +25,74 @@ def register(app):
   # High-level %'s, used to power the donuts.
   @app.route("/data/reports/<report_name>.json")
   def report(report_name):
-      response = Response(ujson.dumps(models.Report.latest().get(report_name, {})))
+      if '-' in report_name:
+        report_name, domain_type = report_name.split('-')
+        report = models.Report.latest_for_type(domain_type).get(report_name, {})
+      else:
+        report = models.Report.latest().get(report_name, {})
+      response = Response(ujson.dumps(report))
       response.headers['Content-Type'] = 'application/json'
       return response
 
-  # Detailed data per-domain, used to power the data tables.
+    # Detailed data per-parent-domain.
   @app.route("/data/domains/<report_name>.<ext>")
   def domain_report(report_name, ext):
       if '-' in report_name:
-        report_name, domain_type = report_name.split('-')
-        domains = models.Domain.eligible_for_type(domain_type, report_name)
+          report_name, domain_type = report_name.split('-')
+          domains = models.Domain.eligible_parents_for_type(domain_type, report_name)
       else:
-        domains = models.Domain.eligible(report_name)
-        domains = sorted(domains, key=lambda k: k['domain'])
+          domains = models.Domain.eligible_parents(report_name)
+          domains = sorted(domains, key=lambda k: k['domain'])
 
       if ext == "json":
+          response = Response(ujson.dumps({'data': domains}))
+          response.headers['Content-Type'] = 'application/json'
+      elif ext == "csv":
+          response = Response(models.Domain.to_csv(domains, report_name))
+          response.headers['Content-Type'] = 'text/csv'
+      return response
+
+  # Detailed data per-host for a given report.
+  @app.route("/data/hosts/<report_name>.<ext>")
+  def hostname_report(report_name, ext):
+      domains = models.Domain.eligible(report_name)
+
+      # sort by base domain, but subdomain within them
+      domains = sorted(domains, key=lambda k: k['domain'])
+      domains = sorted(domains, key=lambda k: k['base_domain'])
+
+      if ext == "json":
+          response = Response(ujson.dumps({'data': domains}))
+          response.headers['Content-Type'] = 'application/json'
+      elif ext == "csv":
+          response = Response(models.Domain.to_csv(domains, report_name))
+          response.headers['Content-Type'] = 'text/csv'
+      return response
+
+  # Detailed data for all subdomains of a given parent domain, for a given report.
+  @app.route("/data/hosts/<domain>/<report_name>.<ext>")
+  def hostname_report_for_domain(domain, report_name, ext):
+    domains = models.Domain.eligible_for_domain(domain, report_name)
+
+    # sort by hostname, but put the parent at the top if it exist
+    domains = sorted(domains, key=lambda k: k['domain'])
+    domains = sorted(domains, key=lambda k: k['is_parent'], reverse=True)
+
+    if ext == "json":
         response = Response(ujson.dumps({'data': domains}))
         response.headers['Content-Type'] = 'application/json'
-      elif ext == "csv":
+    elif ext == "csv":
         response = Response(models.Domain.to_csv(domains, report_name))
         response.headers['Content-Type'] = 'text/csv'
-      return response
+    return response
 
   @app.route("/data/agencies/<report_name>.json")
   def agency_report(report_name):
       if '-' in report_name:
-        report_name, domain_type = report_name.split('-')
-        domains = models.Agency.eligible_for_type(domain_type, report_name)
+          report_name, domain_type = report_name.split('-')
+          domains = models.Agency.eligible_for_type(domain_type, report_name)
       else:
-        domains = models.Agency.eligible(report_name)
+          domains = models.Agency.eligible(report_name)
       response = Response(ujson.dumps({'data': domains}))
       response.headers['Content-Type'] = 'application/json'
       return response
@@ -107,11 +146,11 @@ def register(app):
   # Sanity-check RSS feed, shows the latest report.
   @app.route("/data/reports/feed/")
   def report_feed():
-        report_federal = models.Report.latest().get('https-federal', {})
-        report_city = models.Report.latest().get('https-city', {})
-        response = Response(render_template("feed.xml", report_federal=report_federal, report_city=report_city))
-        response.headers['Content-Type'] = 'application/rss+xml'
-        return response
+      report_federal = models.Report.latest_for_type("federal").get('https', {})
+      report_city = models.Report.latest_for_type("city").get('https', {})
+      response = Response(render_template("feed.xml", report_federal=report_federal, report_city=report_city))
+      response.headers['Content-Type'] = 'application/rss+xml'
+      return response
 
 
   @app.errorhandler(404)

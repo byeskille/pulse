@@ -5,12 +5,20 @@ import locale
 locale.setlocale(locale.LC_TIME, "nb_NO.UTF-8")
 
 from flask import Flask
+from flask_compress import Compress
 from waitress import serve
 
 import newrelic.agent
 from cfenv import AppEnv
 
 app = Flask(__name__)
+
+# Gzip compress most things
+app.config['COMPRESS_MIMETYPES'] = [
+  'text/html', 'text/css', 'text/xml',
+  'text/csv', 'application/json', 'application/javascript'
+]
+Compress(app)
 
 from app import views
 views.register(app)
