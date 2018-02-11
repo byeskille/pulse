@@ -99,7 +99,7 @@ $(function () {
       "-1": "Nei", // N/A
       0: "Nei",  // No
       1: "Nei", // No, HSTS with short max-age (for canonical endpoint)
-      2: "Ja" // Yes, HSTS for >= 1 year (for canonical endpoint)
+      2: "Ja", // Yes, HSTS for >= 1 year (for canonical endpoint)
       3: "Preloaded" // Yes, via preloading (subdomains only)
     },
 
