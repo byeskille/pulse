@@ -37,8 +37,9 @@ clean:
 # Production data update process:
 #
 # Run a fresh scan, update the database, and upload data to S3.
+# Enable Lambda mode, using Lambda AWS profile set up in production.
 update_production:
-	python -m data.update --scan=here --upload
+	python -m data.update --scan=here --upload --lambda --lambda-profile=lambda
 
 # Staging data update process:
 #
@@ -58,13 +59,7 @@ update_development:
 # Pending cloud.gov backup bucket:
 # cg-72ce4caf-d81b-4771-9b96-3624b5554587
 data_init:
-	mkdir -p data/output/scan/results/
-	curl https://s3-us-gov-west-1.amazonaws.com/cg-4adefb86-dadb-4ecf-be3e-f1c7b4f6d084/live/scan/analytics.csv > data/output/scan/results/analytics.csv
-	curl https://s3-us-gov-west-1.amazonaws.com/cg-4adefb86-dadb-4ecf-be3e-f1c7b4f6d084/live/scan/pshtt.csv > data/output/scan/results/pshtt.csv
-	curl https://s3-us-gov-west-1.amazonaws.com/cg-4adefb86-dadb-4ecf-be3e-f1c7b4f6d084/live/scan/tls.csv > data/output/scan/results/tls.csv
-	curl https://s3-us-gov-west-1.amazonaws.com/cg-4adefb86-dadb-4ecf-be3e-f1c7b4f6d084/live/scan/sslyze.csv > data/output/scan/results/sslyze.csv
-	curl https://s3-us-gov-west-1.amazonaws.com/cg-4adefb86-dadb-4ecf-be3e-f1c7b4f6d084/live/scan/meta.json > data/output/scan/results/meta.json
-	curl https://s3-us-gov-west-1.amazonaws.com/cg-4adefb86-dadb-4ecf-be3e-f1c7b4f6d084/live/db/db.json > data/db.json
+	python -m data.update --just-download
 
 #
 # https.jetzt additions:
@@ -83,7 +78,6 @@ publish: deploy.sh
 
 update_httpsjetzt:
 	pip3 install --user -r requirements.txt
-	docker pull 18fgsa/domain-scan
-	printf '#!/bin/bash'"\n"'docker run --rm -v $$(pwd)/data/output/scan:$$(pwd)/data/output/scan 18fgsa/domain-scan $$@' > docker-scan
-	chmod +x docker-scan
-	DOMAIN_SCAN_PATH="./docker-scan" SCANNERS=pshtt python3 -m data.update --scan=here
+	mkdir -p data/output/subdomains/gather/results
+	touch data/output/subdomains/gather/results/gathered.csv
+	DOMAIN_SCAN_PATH="../domain-scan/scan" SCANNERS=pshtt,sslyze python3 -m data.update --scan=here --gather=skip --lambda

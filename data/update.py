@@ -8,11 +8,13 @@
 import subprocess
 import datetime
 import os
-import sys
-import yaml
 import ujson
 import logging
 
+# Import all the constants from data/env.py.
+from data.env import *
+
+# Import processing just for the function call.
 import data.processing
 
 # Orchestrate the overall regular Pulse update process.
@@ -20,14 +22,13 @@ import data.processing
 # Steps:
 #
 # 1. Kick off domain-scan to scan each domain for each measured thing.
-#    - This takes ~25 hours with 1-process SSL Labs, as of 2016-01-24.
-#    - Should drop results into data/output/scan (or a symlink).
+#    - Should drop results into data/output/parents (or a symlink).
 #    - If exits with non-0 code, this should exit with non-0 code.
 #
 # 1a. Subdomains.
-#    - Gather latest subdomains from public sources.
-#    - Run pshtt, once for each source, on gathered subdomains.
-#    - This creates 4 output directories. 2 gather, 2 scan (w/cache).
+#    - Gather latest subdomains from public sources, into one condensed deduped file.
+#    - Run pshtt and sslyze on gathered subdomains.
+#    - This creates 2 resulting CSVs: pshtt.csv and sslyze.csv
 #
 # 2. Run processing.py to generate front-end-ready data as data/db.json.
 #
@@ -35,40 +36,6 @@ import data.processing
 #    - Depends on the AWS CLI and access credentials already being configured.
 #    - TODO: Consider moving from aws CLI to Python library.
 
-this_dir = os.path.dirname(__file__)
-
-# App-level metadata.
-META = yaml.safe_load(open(os.path.join(this_dir, "../meta.yml")))
-DOMAINS = os.environ.get("DOMAINS", META["data"]["domains_url"])
-
-# post-processing and uploading information
-SCANNED_DATA = os.path.join(this_dir, "./output/scan/results")
-CACHE_DATA = os.path.join(this_dir, "./output/scan/cache")
-SUBDOMAIN_DATA = os.path.join(this_dir, "./output/subdomains")
-DB_DATA = os.path.join(this_dir, "./db.json")
-BUCKET_NAME = META['bucket']
-
-# domain-scan information
-SCAN_TARGET = os.path.join(this_dir, "./output/scan")
-SCAN_COMMAND = os.environ.get("DOMAIN_SCAN_PATH", None)
-SCANNERS = os.environ.get("SCANNERS", "pshtt,analytics,tls,a11y,third_parties")
-ANALYTICS_URL = os.environ.get("ANALYTICS_URL", META["data"]["analytics_url"])
-A11Y_CONFIG = os.environ.get("A11Y_CONFIG", "./a11y_config/pa11y_config.json")
-A11Y_REDIRECTS = os.environ.get("A11Y_REDIRECTS",
-                                "./a11y_config/a11y_redirects.yml")
-
-# subdomain gathering/scanning information
-GATHER_TARGET = os.path.join(this_dir, "./output/subdomains/gather")
-GATHER_COMMAND = os.environ.get("DOMAIN_GATHER_PATH", None)
-GATHER_SUFFIX = ".gov"
-GATHER_ANALYTICS_URL = META["data"]["analytics_subdomains_url"]
-GATHER_PARENTS = DOMAINS  # Limit subdomains to set of base domains.
-GATHERERS = [
-  #["censys", "--export"],
-  #["url", "--url=%s" % GATHER_ANALYTICS_URL]
-]
-SUBDOMAIN_SCAN_TARGET = os.path.join(this_dir, "./output/subdomains/scan")
-SUBDOMAIN_SCANNERS = "pshtt"
 
 
 # Options:
@@ -78,37 +45,61 @@ SUBDOMAIN_SCANNERS = "pshtt"
 #     download: download scan data from S3
 #     here: run the default full scan
 # --upload: upload scan data and resulting db.json anything to S3
+# --gather=[skip,here]
+#     skip: skip gathering, assume CSVs are locally cached
+#     here: run the default full gather
 
 def run(options):
+  # If this is just being used to download production data, do that.
+  if options.get("just-download", False):
+    download_s3()
+    return
+
   # Definitive scan date for the run.
   today = datetime.datetime.strftime(datetime.datetime.now(), "%Y-%m-%d")
 
   # 1. Download scan data, do a new scan, or skip altogether.
   scan_mode = options.get("scan", "skip")
+
+  # Whether to gather domains (defaults to doing so).
+  gather_mode = options.get("gather", "here")
+
   if scan_mode == "here":
-    # 1a. Gather and scan subdomains.
-    print("Kicking off subdomain gathering and scanning.")
+    # 1a. Gather .gov federal subdomains.
+    if gather_mode == "here":
+      print("Gathering subdomains.")
+      print()
+      gather_subdomains(options)
+      print()
+      print("Subdomain gathering complete.")
+      print()
+    elif gather_mode == "skip":
+      print("Skipping subdomain gathering.")
+      print()
+
+    # 1b. Scan subdomains for some types of things.
+    print("Scanning subdomains.")
     print()
-    subdomains(options)
+    scan_subdomains(options)
     print()
-    print("Subdomain gathering and scan complete")
+    print("Subdomain scanning complete")
     print()
 
-    print("Kicking off a scan.")
+    # 1c. Scan parent domains for all types of things.
+    print("Scanning parent domains.")
     print()
-    scan(options)
+    scan_parents(options)
     print()
-    print("Domain-scan complete.")
+    print("Scan of parent domains complete.")
   elif scan_mode == "download":
     print("Downloading latest production scan data from S3.")
     print()
-    live_scanned = "s3://%s/live/scan/" % (BUCKET_NAME)
-    shell_out(["aws", "s3", "sync", live_scanned, SCANNED_DATA])
+    download_s3()
     print()
     print("Download complete.")
 
   # Sanity check to make sure we have what we need.
-  if not os.path.exists(os.path.join(SCANNED_DATA, "meta.json")):
+  if not os.path.exists(os.path.join(PARENTS_RESULTS, "meta.json")):
     print("No scan metadata downloaded, aborting.")
     exit()
 
@@ -117,14 +108,14 @@ def run(options):
     the_date = options.get("date")
   else:
     # depends on YYYY-MM-DD coming first in meta.json time format
-    scan_meta = ujson.load(open("data/output/scan/results/meta.json"))
+    scan_meta = ujson.load(open("data/output/parents/results/meta.json"))
     the_date = scan_meta['start_time'][0:10]
 
 
   # 2. Process and load data into Pulse's database.
   print("[%s] Loading data into Pulse." % the_date)
   print()
-  data.processing.run(the_date)
+  data.processing.run(the_date, options)
   print()
   print("[%s] Data now loaded into Pulse." % the_date)
 
@@ -132,7 +123,7 @@ def run(options):
   if options.get("upload", False):
     print("[%s] Syncing scan data and database to S3." % the_date)
     print()
-    upload(the_date)
+    upload_s3(the_date)
     print()
     print("[%s] Scan data and database now in S3." % the_date)
 
@@ -140,111 +131,164 @@ def run(options):
 
 
 # Upload the scan + processed data to /live/ and /archive/ locations by date.
-def upload(date):
-  live_scanned = "s3://%s/live/scan/" % (BUCKET_NAME)
-  live_cached = "s3://%s/live/cache/" % (BUCKET_NAME)
-  live_db = "s3://%s/live/db/" % (BUCKET_NAME)
-  live_subdomains = "s3://%s/live/subdomains/" % (BUCKET_NAME)
-  archive_scanned = "s3://%s/archive/%s/scan/" % (BUCKET_NAME, date)
-  archive_cached = "s3://%s/archive/%s/cache/" % (BUCKET_NAME, date)
-  archive_db = "s3://%s/archive/%s/db/" % (BUCKET_NAME, date)
-  archive_subdomains = "s3://%s/archive/%s/subdomains/" % (BUCKET_NAME, date)
-
+def upload_s3(date):
+  # Used for all operations.
   acl = "--acl=public-read"
 
-  shell_out(["aws", "s3", "sync", SCANNED_DATA, live_scanned, acl])
-  shell_out(["aws", "s3", "sync", CACHE_DATA, live_cached, acl])
-  shell_out(["aws", "s3", "sync", SUBDOMAIN_DATA, live_subdomains, acl])
+  # Used when uploading to the live/ dir.
+  delete = "--delete"
+
+  live_parents = "s3://%s/live/parents/" % BUCKET_NAME
+  live_subdomains = "s3://%s/live/subdomains/" % BUCKET_NAME
+  live_db = "s3://%s/live/db/" % BUCKET_NAME
+
+  shell_out(["aws", "s3", "sync", PARENTS_DATA, live_parents, acl, delete])
+  shell_out(["aws", "s3", "sync", SUBDOMAIN_DATA, live_subdomains, acl, delete])
   shell_out(["aws", "s3", "cp", DB_DATA, live_db, acl])
 
-  # Ask S3 to do the copying, to save on time and bandwidth
-  shell_out(["aws", "s3", "sync", live_scanned, archive_scanned, acl])
-  shell_out(["aws", "s3", "sync", live_cached, archive_cached, acl])
-  shell_out(["aws", "s3", "sync", live_subdomains, archive_subdomains, acl])
-  shell_out(["aws", "s3", "sync", live_db, archive_db, acl])
+  # Then copy the entire live directory to a dated archive.
+  # Ask S3 to do the copying, to save on time and bandwidth.
+  live = "s3://%s/live/" % (BUCKET_NAME)
+  archive = "s3://%s/archive/%s/" % (BUCKET_NAME, date)
+  shell_out(["aws", "s3", "sync", live, archive, acl])
+
+
+# Makes use of the public URLs so that this can be run in a dev
+# environment that doesn't have write credentials to the bucket.
+def download_s3():
+
+  def download(src, dest):
+    # remote sources relative to bucket
+    url = "https://s3-%s.amazonaws.com/%s/%s" % (AWS_REGION, BUCKET_NAME, src)
+
+    # local destinations are relative to data/
+    path = os.path.join(DATA_DIR, dest)
+
+    shell_out(["curl", url, "--output", path])
+
+  # Ensure the destination directories are present.
+  os.makedirs(os.path.join(PARENTS_DATA, "results"), exist_ok=True)
+  os.makedirs(os.path.join(SUBDOMAIN_DATA_GATHERED, "results"), exist_ok=True)
+  os.makedirs(os.path.join(SUBDOMAIN_DATA_SCANNED, "results"), exist_ok=True)
+
+  # Use cURL to download files.
+  # Don't rely on aws being configured, and surface any permission issues.
+  #
+  # Just grab results, not all the cached data.
+
+  # Results of parent domain scanning.
+  for scanner in SCANNERS:
+    download("live/parents/results/%s.csv" % scanner, "output/parents/results/%s.csv" % scanner)
+  download("live/parents/results/meta.json", "output/parents/results/meta.json")
+
+  # Results of subdomain scanning.
+  for scanner in SUBDOMAIN_SCANNERS:
+    download("live/subdomains/scan/results/%s.csv" % scanner, "output/subdomains/scan/results/%s.csv" % scanner)
+  download("live/subdomains/scan/results/meta.json", "output/subdomains/scan/results/meta.json")
+
+  # Results of subdomain gathering.
+  download("live/subdomains/gather/results/gathered.csv", "output/subdomains/gather/results/gathered.csv")
+  download("live/subdomains/gather/results/meta.json", "output/subdomains/gather/results/meta.json")
+
+  # Also download the latest compiled DB.
+  # This will be overwritten immediately if this is being used in
+  # the context of a full data load/processing.
+  download("live/db/db.json", "db.json")
 
 
 # Use domain-scan to scan .gov domains from the set domain URL.
-# Drop the output into data/output/scan/results.
-def scan(options):
-  scanners = "--scan=%s" % SCANNERS
-  output = "--output=%s" % SCAN_TARGET
+# Drop the output into data/output/parents/results.
+def scan_parents(options):
+  scanners = "--scan=%s" % (str.join(",", SCANNERS))
+  analytics = "--analytics=%s" % ANALYTICS_URL
+  output = "--output=%s" % PARENTS_DATA
+  a11y_redirects = "--a11y_redirects=%s" % A11Y_REDIRECTS
+  a11y_config = "--a11y_config=%s" % A11Y_CONFIG
 
   full_command =[
     SCAN_COMMAND, DOMAINS,
-    scanners, output,
-    "--debug",
+    scanners,
+    # analytics, a11y_config, a11y_redirects,
+    output,
+    "--sslyze-certs=false", # ugh, temporary
+    # "--debug", # always capture full output
     "--sort"
   ]
 
-  # In debug mode, use cached data, and allow easy Ctrl-C.
-  if options.get("debug"):
-    full_command += ["--serial"]
+  # Allow some options passed to python -m data.update to go
+  # through to domain-scan.
+  for flag in ["cache", "serial", "lambda", "lambda-profile"]:
+    value = options.get(flag)
+    if value:
+      full_command += ["--%s=%s" % (flag, str(value))]
 
-  # In real mode, ignore cached data, and parallelize.
-  else:
-    full_command += ["--force"]
+  # Until third_parties and a11y are moved to Lambda, can't
+  # do Lambda-sized worker count. Stick with default (10).
+  if options.get("lambda"):
+     full_command += ["--workers=%i" % LAMBDA_WORKERS]
 
   shell_out(full_command)
 
-# Use domain-scan to gather .gov hostnames from public sources.
-# Then run pshtt on each gathered hostname.
-def subdomains(options):
+# Use domain-scan to gather .gov domains from public sources.
+def gather_subdomains(options):
+  print("[gather] Gathering subdomains.")
 
-  # Use domain-scan to gather .gov domains from public sources.
-  def gather_subdomains(gatherer, command):
-    print("[%s][gather] Gathering subdomains." % gatherer)
+  full_command = [GATHER_COMMAND]
 
-    gatherer_output = os.path.join(GATHER_TARGET, gatherer)
+  full_command += [",".join(GATHERER_NAMES)]
+  full_command += GATHERER_OPTIONS
 
-    full_command = [GATHER_COMMAND]
-    full_command += command
+  # Common to all gatherers.
+  # --parents gets auto-included as its own gatherer source.
+  full_command += [
+    "--output=%s" % SUBDOMAIN_DATA_GATHERED,
+    "--suffix=%s" % GATHER_SUFFIXES,
+    "--ignore-www",
+    "--sort",
+    "--debug" # always capture full output
+  ]
 
-    # Common to all gatherers.
-    full_command += [
-      "--suffix=%s" % GATHER_SUFFIX,
-      "--output=%s" % gatherer_output,
-      "--parents=%s" % GATHER_PARENTS,
-      "--sort",
-      "--force",
-      "--debug"
-    ]
+  # Allow some options passed to python -m data.update to go
+  # through to domain-scan.
+  for flag in ["cache"]:
+    if options.get(flag):
+      full_command += ["--%s" % flag]
 
-    shell_out(full_command)
-
-
-  # Run pshtt on each gathered set of subdomains.
-  def scan_subdomains(gatherer):
-    print("[%s][scan] Scanning subdomains." % gatherer)
-
-    subdomains = os.path.join(GATHER_TARGET, gatherer, "results", ("%s.csv" % gatherer))
-    scanner_output = os.path.join(SUBDOMAIN_SCAN_TARGET, gatherer)
-
-    full_command = [
-      SCAN_COMMAND,
-      subdomains,
-      "--scan=%s" % SUBDOMAIN_SCANNERS,
-      "--output=%s" % scanner_output,
-      "--debug",
-      "--sort"
-    ]
-
-    # In debug mode, use cached data, and allow easy Ctrl-C.
-    if options.get("debug"):
-      full_command += ["--serial"]
-
-    # In real mode, ignore cached data, and parallelize.
-    else:
-      full_command += ["--force"]
-
-    shell_out(full_command)
+  shell_out(full_command)
 
 
-  for command in GATHERERS:
-    gatherer = command[0]
-    gather_subdomains(gatherer, command)
-    scan_subdomains(gatherer)
+# Run pshtt on each gathered set of subdomains.
+def scan_subdomains(options):
+  print("[scan] Scanning subdomains.")
 
+  subdomains = os.path.join(SUBDOMAIN_DATA_GATHERED, "results", "gathered.csv")
+
+  full_command = [
+    SCAN_COMMAND,
+    subdomains,
+    "--scan=%s" % str.join(",", SUBDOMAIN_SCANNERS),
+    "--output=%s" % SUBDOMAIN_DATA_SCANNED,
+    "--sslyze-certs=false", # ugh, temporary
+    # "--debug", # always capture full output
+    "--sort"
+  ]
+
+  # Allow some options passed to python -m data.update to go
+  # through to domain-scan.
+  for flag in ["cache", "serial", "lambda", "lambda-profile"]:
+    value = options.get(flag)
+    if value:
+      full_command += ["--%s=%s" % (flag, str(value))]
+
+  # If Lambda mode is on, use way more workers.
+  if options.get("lambda") and (options.get("serial", None) is None):
+    full_command += ["--workers=%i" % LAMBDA_WORKERS]
+
+  shell_out(full_command)
+
+
+
+## Utils function for shelling out.
 
 def shell_out(command, env=None):
     try:
@@ -257,27 +301,6 @@ def shell_out(command, env=None):
         logging.warn("Error running %s." % (str(command)))
         exit(1)
         return None
-
-# Quick and dirty CLI options parser.
-def options():
-  options = {}
-  for arg in sys.argv[1:]:
-    if arg.startswith("--"):
-
-      if "=" in arg:
-        key, value = arg.split('=')
-      else:
-        key, value = arg, "true"
-
-      key = key.split("--")[1]
-      key = key.lower()
-      value = value.lower()
-
-      if value == 'true': value = True
-      elif value == 'false': value = False
-      options[key] = value
-
-  return options
 
 
 ### Run when executed.

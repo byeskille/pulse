@@ -18,7 +18,7 @@
 
   <div id="tab-panel" class="wrapper" role="tabpanel" aria-hidden="false">
     <table class="agency responsive https">
-      <caption>Secure HTTP(S) By Agency. Table is sortable via first row table headers. Each row contains an agency and related attributes.</caption>
+      <caption>HTTPS by agency. Table is sortable via first row table headers. Each row contains an agency and related attributes.</caption>
       <thead>
         <tr>
             <th class="all" scope="col">{{ domain_type | domain_type_label }}</th>
@@ -26,6 +26,8 @@
             <th class="min-tablet" scope="col">Bruker HTTPS</th>
             <th class="min-tablet" scope="col">Alt på HTTPS</th>
             <th class="desktop" scope="col">Strict Transport Security (HSTS)</th>
+            <th class="desktop" scope="col">Skrudd av utdaterte/&#8203;usikre standarder</th>
+            <th class="desktop" scope="col">Preloaded (anbefalt)</th>
             <!--<th class="none" scope="col">SSL Labs (A- or higher)</th>-->
           </tr>
         </thead>

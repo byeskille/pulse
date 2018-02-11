@@ -69,11 +69,18 @@
           <li>"Ja" betyr, at <code>Strict-Transport-Security</code>er satt i HTTP-sikkerhetshode for nettstedet.</li>
         </ul>
 
-        <ul>
+        <ul id="known-weak-crypto">
+          <li><strong>Skrudd av utdaterte/usikre standarder:</strong></li>
+          <li><strong>Muligheter:</strong> Ja, "Nei, bruker [...]"</li>
+          <li>"Ja" betyr, at tilkoblingen til serveren ikke bruker utdaterte/usikre krypteringsstandarder som RC4/3DES og SSLv2/SSLv3.</li>
+          <li>"Nei, bruker [...]" viser, hvilke krypteringsstandarder og protokoller som brukes, og som er kjent at har sikkerhetssvakheter.</li>
+        </ul>
+
+        <ul id="uses-preloading">
           <li><strong>Preloaded (anbefalt)</strong></li>
-          <li><strong>Mulige svar:</strong> Nei, Klargjort, Ja</li>
-          <li><em>Klargjort</em> betyr, at dette domenet har HSTS i HTTP-sikkerhetshode, som gjelder for alle subdomener og for er markert for <a href="https://hstspreload.appspot.com">preloading</a>.</li>
-          <li><em>Ja</em> betyr, at dette domenet er klargjort (se over) <strong>og</strong> at det finnes en oppføring i <a href="https://chromium.googlesource.com/chromium/src/+/master/net/http/transport_security_state_static.json">Chrome preload-listen</a>.
+          <li><strong>Muligheter:</strong> Nei, Forberedt, Ja</li>
+          <li><em>Forberedt</em> betyr at dette domenet har satt en HSTS-Header, som gjelder for alle underdomener/subdomener og at det er markert for <a href="https://hstspreload.appspot.com">preloading</a> (hardkoding i nettlesere). Alt som mangler er at hardkodingen innføres i nettlesere.</li>
+          <li><em>Ja</em> betyr, at dette domenet er forberedt (se over) <strong>og</strong> informasjon er sendt inn til den offentlige <a href="https://chromium.googlesource.com/chromium/src/+/master/net/http/transport_security_state_static.json">Chrome preload-listen</a> for hardkoding i nettlesere.
           </li>
         </ul>
 

@@ -21,15 +21,14 @@
       <caption>Secure HTTP(S) By Domain. Table is sortable via first row table headers. Each row contains a domain and related attributes.</caption>
       <thead>
           <tr>
-            <th class="all">Domene</th>
-            <th class="never">Canonical</th>
-            <th class="none">{{ domain_type | domain_type_label }}:</th>
-            <th class="min-tablet">Bruker HTTPS</th>
-            <th class="min-tablet">Alt på HTTPS</th>
-            <th class="min-tablet-l">Strict Transport Security (HSTS)</th>
-            <th class="min-tablet-l">Preloaded (anbefalt)</th>
-            <!--<th class="none">SSL Labs Grade</th>-->
-            <th class="none" scope="col"></th>
+          <th class="never"></th>
+          <th class="all">Domene</th>
+          <th class="never">{{ domain_type | domain_type_label }}:</th>
+          <th class="min-tablet">Bruker HTTPS</th>
+          <th class="min-tablet">Alt på HTTPS</th>
+          <th class="min-tablet-l">Strict Transport Security (HSTS)</th>
+          <th class="min-tablet-l">Skrudd av utdaterte/&#8203;usikre standarder</th>
+          <th class="min-tablet-l">Preloaded (anbefalt)</th>
             <th class="none" scope="col"></th>
           </tr>
         </thead>
