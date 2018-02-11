@@ -18,12 +18,12 @@ var Tables = {
 
     if (!options.oLanguage) {
       options.oLanguage = {
-        "sSearch": "Suche:",
-        "sLengthMenu": "Zeige _MENU_ Einträge",
-        "sEmptyTable": "Keine Daten in dieser Tabelle verfügbar",
-        "sInfo": "Zeige _START_ - _END_ von _TOTAL_ Einträgen",
-        "sInfoEmpty": "Zeige 0 - 0 von 0 Einträgen",
-        "sInfoFiltered": "(von insgesamt _MAX_ Einträgen)",
+        "sSearch": "Søk:",
+        "sLengthMenu": "Viser _MENU_ oppføringer",
+        "sEmptyTable": "Ingen data for visning i denne tabellen",
+        "sInfo": "Viser _START_ - _END_ av _TOTAL_ oppføringer",
+        "sInfoEmpty": "Viser 0 - 0 av 0 oppføringer",
+        "sInfoFiltered": "(av totalt _MAX_ oppføringer)",
         "oPaginate": {
           "sPrevious": "<<",
           "sNext": ">>"
@@ -32,12 +32,12 @@ var Tables = {
     }
 
     options.language = {
-      search: "Suche:",
-      lengthMenu: "Zeige _MENU_ Einträge",
-      emptyTable: "Keine Daten in dieser Tabelle verfügbar",
-      info: "Zeige _START_ - _END_ von _TOTAL_ Einträgen",
-      infoEmpty: "Zeige 0 - 0 von 0 Einträgen",
-      infoFiltered: "(von insgesamt _MAX_ Einträgen)",
+      search: "Søk:",
+      lengthMenu: "Viser _MENU_ oppføringer",
+      emptyTable: "Ingen data for visning i denne tabellen",
+      info: "Viser _START_ - _END_ av _TOTAL_ oppføringer",
+      infoEmpty: "Viser 0 - 0 av 0 oppføringer",
+      infoFiltered: "(av totalt _MAX_ oppføringer)",
       paginate: {
         previous: "<<",
         next: ">>"
