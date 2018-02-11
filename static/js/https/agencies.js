@@ -51,7 +51,7 @@ $(document).ready(function () {
 
     var link = function(text) {
       return "" +
-        "<a href=\"/https/domains/#" +
+        "<a href=\"/https-norge/https/domains/#" +
           QueryString.stringify({q: row["name"]}) + "\">" +
            text +
         "</a>";
