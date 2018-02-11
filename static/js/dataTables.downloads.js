@@ -30,7 +30,7 @@ $.fn.dataTable.Download = function ( inst ) {
 
     var elem = "" +
       "<a href=\"" + csv + "\" download>" +
-        "Download als CSV" +
+        "Last ned som CSV" +
       "</a>";
 
     container.html(elem);
