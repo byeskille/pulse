@@ -150,7 +150,7 @@ $(function () {
     var all = [];
     var number = hosts.length;
 
-    var type = hosts[0].domain_type == 'federal' ? 'Behörde' : 'Kommune';
+    var type = hosts[0].domain_type == 'federal' ? 'Virksomhet' : 'Virksomhet';
     var meta = $("<tr></tr>").addClass("meta").html("<td class=\"link\" colspan=6><strong>" + type + ":</strong> " + hosts[0].agency_name + "</td>");
     all.push(meta);
 
